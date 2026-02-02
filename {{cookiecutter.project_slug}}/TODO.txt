@@ -1,0 +1,7 @@
+bug 1 := if the module exist , it should return an error , module exist
+bug 2 := having that the models are on differents modules, create mock on those models in the modules or make a single mock but extracting from all the models in the modules
+bug3 := sqlc bugs fix 
+        write remove module make command which will delete the section for the module and if rerun it shouldnt create another sqlc command if exist
+bug4 := custom error number and code 
+bug5 := adding any fields for validation 
+

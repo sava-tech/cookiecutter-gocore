@@ -1,0 +1,964 @@
+basePath: /
+definitions:
+  server.AddPowerUpReq:
+    properties:
+      power_up:
+        type: string
+      quantity:
+        type: integer
+    required:
+    - power_up
+    - quantity
+    type: object
+  server.ClientReq:
+    properties:
+      device_id:
+        type: string
+      invite_code:
+        type: string
+      secret_word:
+        type: string
+    type: object
+  server.CreateBrandFrenzyReq:
+    properties:
+      brand:
+        type: string
+      image:
+        type: string
+      rules:
+        type: string
+      start_date:
+        type: string
+    required:
+    - brand
+    - image
+    - rules
+    - start_date
+    type: object
+  server.CreateErrLogReq:
+    properties:
+      message:
+        type: string
+    required:
+    - message
+    type: object
+  server.CreateGameSessionRequest:
+    properties:
+      device_id:
+        type: string
+      game_id:
+        type: string
+      game_mode:
+        type: string
+      game_type:
+        type: integer
+      invitable_code:
+        type: string
+      time_limit:
+        type: integer
+    required:
+    - device_id
+    - game_id
+    - game_mode
+    - game_type
+    - invitable_code
+    - time_limit
+    type: object
+  server.CreateInviteRequest:
+    properties:
+      secret_word:
+        type: string
+      word_type:
+        type: integer
+    required:
+    - secret_word
+    - word_type
+    type: object
+  server.CreateTournamentReq:
+    properties:
+      max_players:
+        type: integer
+      start_date:
+        type: string
+      tournament_name:
+        type: string
+    required:
+    - max_players
+    - start_date
+    - tournament_name
+    type: object
+  server.CreateUserRequest:
+    properties:
+      age:
+        type: integer
+      avatar:
+        type: string
+      country:
+        type: string
+      country_code:
+        type: string
+      device_id:
+        description: Action      string `json:"action"` // example, "create_user"
+        type: string
+      gender:
+        type: string
+      region:
+        type: string
+      username:
+        type: string
+    required:
+    - age
+    - avatar
+    - country
+    - country_code
+    - device_id
+    - gender
+    - region
+    - username
+    type: object
+  server.DeleteBrandFrenzyReq:
+    properties:
+      id:
+        type: string
+    required:
+    - id
+    type: object
+  server.GetBrandFrenzyReq:
+    properties:
+      brand_id:
+        type: string
+    required:
+    - brand_id
+    type: object
+  server.GetTournamentFixReq:
+    properties:
+      tournament_id:
+        type: string
+    required:
+    - tournament_id
+    type: object
+  server.JoinTournamentReq:
+    properties:
+      tournament_id:
+        type: string
+    required:
+    - tournament_id
+    type: object
+  server.LeaderBoardReq:
+    properties:
+      device_id:
+        type: string
+      type:
+        type: string
+    required:
+    - type
+    type: object
+  server.ListBrandFrenzyParticipantReq:
+    properties:
+      page_id:
+        minimum: 1
+        type: integer
+      page_size:
+        maximum: 50
+        minimum: 1
+        type: integer
+    required:
+    - page_id
+    - page_size
+    type: object
+  server.ListBrandFrenzyReq:
+    properties:
+      page_id:
+        minimum: 1
+        type: integer
+      page_size:
+        maximum: 50
+        minimum: 1
+        type: integer
+    required:
+    - page_id
+    - page_size
+    type: object
+  server.ListTournamentReq:
+    properties:
+      page_id:
+        minimum: 1
+        type: integer
+      page_size:
+        maximum: 50
+        minimum: 1
+        type: integer
+    required:
+    - page_id
+    - page_size
+    type: object
+  server.OfflineGameReq:
+    properties:
+      coin:
+        type: integer
+      score:
+        type: integer
+      xp:
+        type: integer
+    required:
+    - coin
+    - score
+    - xp
+    type: object
+  server.PlayerReq:
+    properties:
+      device_id:
+        type: string
+      secret_word:
+        type: string
+      session_id:
+        type: string
+      username:
+        type: string
+      word_type:
+        type: integer
+    type: object
+  server.TournamentMatchReq:
+    properties:
+      device_id:
+        type: string
+      secret_word:
+        type: string
+      tournament_id:
+        type: string
+    type: object
+  server.UpdateBotMatchReq:
+    properties:
+      coin:
+        type: integer
+      device_id:
+        type: string
+      score:
+        type: integer
+      xp:
+        type: integer
+    required:
+    - coin
+    - device_id
+    - score
+    - xp
+    type: object
+  server.UpdateBrandFrenzyParticipantReq:
+    properties:
+      score:
+        type: integer
+    required:
+    - score
+    type: object
+  server.UpdateBrandFrenzyReq:
+    properties:
+      brand:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      rules:
+        type: string
+      start_date:
+        type: string
+    required:
+    - brand
+    - id
+    - image
+    - rules
+    - start_date
+    type: object
+  server.UsePowerUpReq:
+    properties:
+      power_up:
+        type: string
+      quantity:
+        type: integer
+    required:
+    - power_up
+    - quantity
+    type: object
+  server.createUserDeviceIDRequest:
+    properties:
+      age:
+        type: integer
+      avatar:
+        type: string
+      country:
+        type: string
+      country_code:
+        type: string
+      device_id:
+        type: string
+      gender:
+        type: string
+      region:
+        type: string
+      username:
+        type: string
+    required:
+    - age
+    - avatar
+    - country
+    - country_code
+    - device_id
+    - gender
+    - username
+    type: object
+  server.editUserReq:
+    properties:
+      age:
+        type: integer
+      avatar:
+        type: string
+      coin:
+        type: integer
+      country:
+        type: string
+      country_code:
+        type: string
+      daily_puzzle_solved:
+        type: integer
+      duels_won:
+        type: integer
+      email:
+        type: string
+      fastest_time:
+        type: integer
+      gender:
+        type: string
+      is_active:
+        type: boolean
+      least_guesses:
+        type: integer
+      level:
+        type: integer
+      matches_played:
+        type: integer
+      mission:
+        items:
+          type: string
+        type: array
+      monthly_total_score:
+        type: integer
+      region:
+        type: string
+      streak_win:
+        type: integer
+      total_score:
+        type: integer
+      total_words_cracked:
+        type: integer
+      tournaments_won:
+        type: integer
+      username:
+        type: string
+      wins:
+        type: integer
+      xp:
+        type: integer
+    type: object
+  server.loginUserDeviceIDRequest:
+    properties:
+      device_id:
+        type: string
+    required:
+    - device_id
+    type: object
+  server.loginUserEmailRequest:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 6
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  server.renewAccessTokenRequest:
+    properties:
+      refresh_token:
+        type: string
+    required:
+    - refresh_token
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is the API documentation for Word Crackein.
+  title: Word Crackein API
+  version: "1.0"
+paths:
+  /auth/create-user-device:
+    post:
+      consumes:
+      - application/json
+      description: Register a user account using device
+      parameters:
+      - description: User info
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.createUserDeviceIDRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create a new user with device
+      tags:
+      - Auth
+  /auth/create-user-email:
+    post:
+      consumes:
+      - application/json
+      description: Register a user account using email
+      parameters:
+      - description: User info
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.CreateUserRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create a new user with email
+      tags:
+      - Auth
+  /auth/login-user-device:
+    post:
+      consumes:
+      - application/json
+      description: login a user account using device
+      parameters:
+      - description: login user
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.loginUserDeviceIDRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: login user with device
+      tags:
+      - Auth
+  /auth/login-user-email:
+    post:
+      consumes:
+      - application/json
+      description: login a user account using email
+      parameters:
+      - description: login user email
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.loginUserEmailRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: login user with email
+      tags:
+      - Auth
+  /auth/refresh-token:
+    post:
+      consumes:
+      - application/json
+      description: refresh the auth token
+      parameters:
+      - description: Refresh Token
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.renewAccessTokenRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: refresh token
+      tags:
+      - Auth
+  /bot/get-bot:
+    get:
+      consumes:
+      - application/json
+      description: get the bot profile
+      produces:
+      - application/json
+      responses: {}
+      summary: get the bot account
+      tags:
+      - Bot
+  /bot/update-bot-match:
+    patch:
+      consumes:
+      - application/json
+      description: Register a user account using device
+      parameters:
+      - description: User info
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.UpdateBotMatchReq'
+      produces:
+      - application/json
+      responses: {}
+      summary: Update a new user with device
+      tags:
+      - Bot
+  /brand-frenzy/all:
+    get:
+      consumes:
+      - application/json
+      description: this lists brand frenzy
+      parameters:
+      - description: list brand frenzy
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.ListBrandFrenzyReq'
+      produces:
+      - application/json
+      responses: {}
+      summary: List brand frenzy
+      tags:
+      - Brand frenzy
+  /brand-frenzy/create:
+    post:
+      consumes:
+      - application/json
+      description: this creates the brand frenzy
+      parameters:
+      - description: create brand frenzy
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.CreateBrandFrenzyReq'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create the brand frenzy
+      tags:
+      - Brand frenzy
+  /brand-frenzy/delete:
+    get:
+      consumes:
+      - application/json
+      description: this delete brand frenzy
+      parameters:
+      - description: delete brand frenzy
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.DeleteBrandFrenzyReq'
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete brand frenzy
+      tags:
+      - Brand frenzy
+  /brand-frenzy/get:
+    get:
+      consumes:
+      - application/json
+      description: this get brand frenzy
+      parameters:
+      - description: get brand frenzy
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.GetBrandFrenzyReq'
+      produces:
+      - application/json
+      responses: {}
+      summary: Get brand frenzy
+      tags:
+      - Brand frenzy
+  /brand-frenzy/get-participant:
+    get:
+      consumes:
+      - application/json
+      description: this get participant brand frenzy
+      produces:
+      - application/json
+      responses: {}
+      summary: Get participant brand frenzy
+      tags:
+      - Brand frenzy
+  /brand-frenzy/join:
+    post:
+      consumes:
+      - application/json
+      description: this join brand frenzy
+      produces:
+      - application/json
+      responses: {}
+      summary: Join brand frenzy
+      tags:
+      - Brand frenzy
+  /brand-frenzy/list-participant:
+    get:
+      consumes:
+      - application/json
+      description: this list participant brand frenzy
+      parameters:
+      - description: list participant brand frenzy
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.ListBrandFrenzyParticipantReq'
+      produces:
+      - application/json
+      responses: {}
+      summary: List participant brand frenzy
+      tags:
+      - Brand frenzy
+  /brand-frenzy/update:
+    patch:
+      consumes:
+      - application/json
+      description: this update brand frenzy
+      parameters:
+      - description: update brand frenzy
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.UpdateBrandFrenzyReq'
+      produces:
+      - application/json
+      responses: {}
+      summary: Update brand frenzy
+      tags:
+      - Brand frenzy
+  /brand-frenzy/update-participant:
+    patch:
+      consumes:
+      - application/json
+      description: this update participant brand frenzy
+      parameters:
+      - description: update participant brand frenzy
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.UpdateBrandFrenzyParticipantReq'
+      produces:
+      - application/json
+      responses: {}
+      summary: Update participant brand frenzy
+      tags:
+      - Brand frenzy
+  /error-log/create:
+    post:
+      consumes:
+      - application/json
+      description: this creates the error log
+      parameters:
+      - description: create error log
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.CreateErrLogReq'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create the error log
+      tags:
+      - Error log
+  /game/add-power-up:
+    post:
+      consumes:
+      - application/json
+      description: this add power up
+      parameters:
+      - description: add power up
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.AddPowerUpReq'
+      produces:
+      - application/json
+      responses: {}
+      summary: Add power up
+      tags:
+      - Game
+  /game/create-game-session:
+    post:
+      consumes:
+      - application/json
+      description: this create game session
+      parameters:
+      - description: create game session
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.CreateInviteRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create game session
+      tags:
+      - Game
+  /game/get-power-up:
+    get:
+      consumes:
+      - application/json
+      description: this get power up
+      produces:
+      - application/json
+      responses: {}
+      summary: Get power up
+      tags:
+      - Game
+  /game/offline-game-score:
+    post:
+      consumes:
+      - application/json
+      description: this add offline game score
+      parameters:
+      - description: add offline game score
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.OfflineGameReq'
+      produces:
+      - application/json
+      responses: {}
+      summary: Add offline game score
+      tags:
+      - Game
+  /game/use-power-up:
+    post:
+      consumes:
+      - application/json
+      description: this use power up
+      parameters:
+      - description: use power up
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.UsePowerUpReq'
+      produces:
+      - application/json
+      responses: {}
+      summary: Use power up
+      tags:
+      - Game
+  /tournament:
+    get:
+      consumes:
+      - application/json
+      description: this list of tournament
+      parameters:
+      - description: list of tournament
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.ListTournamentReq'
+      produces:
+      - application/json
+      responses: {}
+      summary: List of tournament
+      tags:
+      - Tournament
+  /tournament/create:
+    post:
+      consumes:
+      - application/json
+      description: this create tournament
+      parameters:
+      - description: create tournament
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.CreateTournamentReq'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create tournament
+      tags:
+      - Tournament
+  /tournament/fixtures:
+    get:
+      consumes:
+      - application/json
+      description: this get tournament
+      parameters:
+      - description: get tournament
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.GetTournamentFixReq'
+      produces:
+      - application/json
+      responses: {}
+      summary: Get tournament
+      tags:
+      - Tournament
+  /tournament/join:
+    post:
+      consumes:
+      - application/json
+      description: this join tournament
+      parameters:
+      - description: join tournament
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.JoinTournamentReq'
+      produces:
+      - application/json
+      responses: {}
+      summary: Join tournament
+      tags:
+      - Tournament
+  /user/delete-account:
+    post:
+      consumes:
+      - application/json
+      description: delete the user profile
+      produces:
+      - application/json
+      responses: {}
+      summary: delete the user account
+      tags:
+      - User
+  /user/edit-account:
+    patch:
+      consumes:
+      - application/json
+      description: edit the user profile
+      parameters:
+      - description: Edit the user
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.editUserReq'
+      produces:
+      - application/json
+      responses: {}
+      summary: edit the user profile
+      tags:
+      - User
+  /user/get-account:
+    get:
+      consumes:
+      - application/json
+      description: get the user profile
+      produces:
+      - application/json
+      responses: {}
+      summary: get the user account
+      tags:
+      - User
+  /ws/create-session:
+    get:
+      consumes:
+      - application/json
+      description: this create game session
+      parameters:
+      - description: create game session
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.CreateGameSessionRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create game session
+      tags:
+      - WebSocket-gameplay
+  /ws/join-link-match:
+    get:
+      consumes:
+      - application/json
+      description: this join link match
+      parameters:
+      - description: join link match gameplay
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.ClientReq'
+      produces:
+      - application/json
+      responses: {}
+      summary: Join link match
+      tags:
+      - WebSocket-gameplay
+  /ws/join-online-match:
+    get:
+      consumes:
+      - application/json
+      description: this join online
+      parameters:
+      - description: join online gameplay
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.PlayerReq'
+      produces:
+      - application/json
+      responses: {}
+      summary: Join online
+      tags:
+      - WebSocket-gameplay
+  /ws/leader-board:
+    get:
+      consumes:
+      - application/json
+      description: this leader board
+      parameters:
+      - description: 'leader board '
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.LeaderBoardReq'
+      produces:
+      - application/json
+      responses: {}
+      summary: Leader board
+      tags:
+      - WebSocket-gameplay
+  /ws/tournament-match:
+    get:
+      consumes:
+      - application/json
+      description: this join tournament match
+      parameters:
+      - description: join tournament match gameplay
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.TournamentMatchReq'
+      produces:
+      - application/json
+      responses: {}
+      summary: Join tournament match
+      tags:
+      - WebSocket-gameplay
+swagger: "2.0"

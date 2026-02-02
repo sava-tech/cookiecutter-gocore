@@ -1,0 +1,22 @@
+{
+  "project_name": "gomacbot",
+  "project_slug": "{{ cookiecutter.project_name | lower | replace(' ', '-') }}",
+  "description": "Behold My Awesome Goland Project!",
+  "author_name": "Michael Assanama",
+  "module_path": "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}",
+  "github_username": "your-github-handle",
+  "email": "{{ cookiecutter.author_name.lower() | trim() |replace(' ', '-') }}@{{ cookiecutter.domain_name.lower() | trim() }}",
+  "go_version": "1.25.4",
+  "postgresql_version": ["17", "16", "15", "14"],
+  "cloud_provider": ["AWS", "Railway", "Azure", "Digitalocean", "None"],
+  "mail_service": [
+    "Mailgun",
+    "Amazon SES",
+    "Mailtrap",
+    "Postmark",
+    "Sendgrid",
+    "Other SMTP"
+  ],
+  "ci_tool": ["None", "Travis", "Gitlab", "Github", "Drone"],
+  "license": "MIT"
+}

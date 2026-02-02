@@ -1,0 +1,2001 @@
+basePath: /
+definitions:
+  db.PropertyReview:
+    properties:
+      comment:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      property:
+        type: string
+      rating:
+        type: integer
+      updated_at:
+        type: string
+      user:
+        type: string
+    type: object
+  server.AmenitiesReq:
+    properties:
+      amenity:
+        type: string
+    required:
+    - amenity
+    type: object
+  server.BankDetailsReq:
+    properties:
+      account_name:
+        example: John Doe
+        type: string
+      bank_name:
+        example: First Bank
+        type: string
+      property_id:
+        example: 2932022230
+        type: integer
+    required:
+    - property_id
+    type: object
+  server.BookMarkedReq:
+    properties:
+      property_id:
+        example: 341e8c11-bdeb-41b7-84f5-6b96c0d99e02
+        type: string
+    required:
+    - property_id
+    type: object
+  server.BookingReqMap:
+    properties:
+      check_in:
+        example: "1733875200000"
+        type: string
+      check_out:
+        example: "1733875200000"
+        type: string
+      number_of_people:
+        example: 3
+        type: integer
+      property_id:
+        example: 341e8c11-bdeb-41b7-84f5-6b96c0d99e02
+        type: string
+    required:
+    - check_in
+    - check_out
+    - number_of_people
+    - property_id
+    type: object
+  server.CategoryReq:
+    properties:
+      category:
+        type: string
+    required:
+    - category
+    type: object
+  server.ChangePasswordReq:
+    properties:
+      old_password:
+        example: myOLDpass123
+        type: string
+      password:
+        example: myNewpass123
+        minLength: 6
+        type: string
+    required:
+    - old_password
+    - password
+    type: object
+  server.ChatReq:
+    properties:
+      content:
+        type: string
+      property_id:
+        type: string
+      reply_to_message_id:
+        type: string
+    type: object
+  server.CreatePropertyReq:
+    properties:
+      amenities:
+        items:
+          type: string
+        type: array
+      amount:
+        type: integer
+      bq:
+        type: integer
+      category:
+        type: string
+      city:
+        type: string
+      country:
+        type: string
+      description:
+        type: string
+      description_title:
+        type: string
+      ground_rule:
+        items:
+          type: string
+        type: array
+      house_number:
+        type: string
+      images:
+        items:
+          type: string
+        type: array
+      living_room:
+        type: integer
+      negotiable:
+        type: boolean
+      property_name:
+        type: string
+      rooms:
+        type: integer
+      safety_item:
+        items:
+          type: string
+        type: array
+      status:
+        type: string
+      street_address:
+        type: string
+      toilet:
+        type: integer
+      zip_code:
+        type: string
+    required:
+    - amenities
+    - amount
+    - category
+    - city
+    - country
+    - description
+    - description_title
+    - house_number
+    - images
+    - negotiable
+    - property_name
+    - rooms
+    - safety_item
+    - status
+    - street_address
+    - toilet
+    - zip_code
+    type: object
+  server.CreateReviewRequest:
+    properties:
+      comment:
+        type: string
+      property_id:
+        type: string
+      rating:
+        maximum: 5
+        minimum: 1
+        type: integer
+    required:
+    - comment
+    - property_id
+    - rating
+    type: object
+  server.CreateUserRequest:
+    properties:
+      account_type:
+        enum:
+        - personal
+        - merchant
+        type: string
+      email:
+        type: string
+      first_name:
+        minLength: 2
+        type: string
+      last_name:
+        minLength: 2
+        type: string
+      password:
+        minLength: 6
+        type: string
+      phone_number:
+        type: string
+    required:
+    - account_type
+    - email
+    - first_name
+    - last_name
+    - password
+    type: object
+  server.EditUserReq:
+    properties:
+      address:
+        type: string
+      allow_notification:
+        type: boolean
+      first_name:
+        type: string
+      last_name:
+        type: string
+      phone_number:
+        type: string
+      profile_image:
+        type: string
+      share_location:
+        type: boolean
+      state:
+        type: string
+    type: object
+  server.ErrorResponse:
+    properties:
+      code:
+        example: 400
+        type: integer
+      message:
+        example: invalid request data
+        type: string
+      status:
+        example: error
+        type: string
+    type: object
+  server.NegotiateReq:
+    properties:
+      amount:
+        type: integer
+      check_in:
+        example: "1733875200000"
+        type: string
+      check_out:
+        example: "1733875200000"
+        type: string
+      is_accepted:
+        type: boolean
+      number_of_people:
+        example: 3
+        type: integer
+      property_id:
+        type: string
+      reply_to_message_id:
+        type: string
+    required:
+    - check_in
+    - check_out
+    - number_of_people
+    type: object
+  server.OTPRequest:
+    properties:
+      identifier:
+        example: john@gmail.com or 234XXXXXX23
+        type: string
+      identifier_type:
+        enum:
+        - email
+        - sms
+        - whatsapp
+        example: email or sms
+        type: string
+      verification_type:
+        enum:
+        - registration
+        - password_reset
+        - update_phonenumber
+        example: registration or password_reset or update_phonenumber
+        type: string
+    required:
+    - identifier
+    - identifier_type
+    - verification_type
+    type: object
+  server.ResetPasswordReq:
+    properties:
+      email:
+        example: test@test.com
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  server.SafetyItemsReq:
+    properties:
+      safety_items:
+        type: string
+    required:
+    - safety_items
+    type: object
+  server.SuccessResponse:
+    properties:
+      data: {}
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  server.UpdateAmenitiesReq:
+    properties:
+      amenities:
+        type: string
+      id:
+        minLength: 1
+        type: string
+    required:
+    - amenities
+    - id
+    type: object
+  server.UpdateCategoryReq:
+    properties:
+      category:
+        type: string
+      id:
+        minLength: 1
+        type: string
+    required:
+    - category
+    - id
+    type: object
+  server.UpdatePropertyReq:
+    properties:
+      amenities:
+        items:
+          type: string
+        type: array
+      amount:
+        type: integer
+      bq:
+        type: integer
+      category:
+        type: string
+      city:
+        type: string
+      country:
+        type: string
+      description:
+        type: string
+      description_title:
+        type: string
+      ground_rule:
+        items:
+          type: string
+        type: array
+      house_number:
+        type: string
+      id:
+        minLength: 1
+        type: string
+      images:
+        items:
+          type: string
+        type: array
+      living_room:
+        type: integer
+      negotiable:
+        type: boolean
+      property_name:
+        type: string
+      rooms:
+        type: integer
+      safety_item:
+        items:
+          type: string
+        type: array
+      status:
+        type: string
+      street_address:
+        type: string
+      toilet:
+        type: integer
+      zip_code:
+        type: string
+    required:
+    - id
+    type: object
+  server.UpdateReviewRequest:
+    properties:
+      comment:
+        type: string
+      property_id:
+        type: string
+      rating:
+        maximum: 5
+        minimum: 1
+        type: integer
+    required:
+    - comment
+    - property_id
+    - rating
+    type: object
+  server.UpdateSafetyItemsReq:
+    properties:
+      id:
+        minLength: 1
+        type: string
+      safety_items:
+        type: string
+    required:
+    - id
+    - safety_items
+    type: object
+  server.VerifyPaymentReq:
+    properties:
+      payment_provider:
+        enum:
+        - flutterwave
+        - paystack
+        example: flutterwave paystack
+        type: string
+      payment_ref:
+        type: string
+    required:
+    - payment_provider
+    - payment_ref
+    type: object
+  server.VerifyTokenRequest:
+    properties:
+      identifier:
+        example: john@gmail.com or 234XXXXXX23
+        type: string
+      identifier_type:
+        enum:
+        - email
+        - sms
+        - whatsapp
+        example: email or sms
+        type: string
+      token:
+        example: "0000"
+        type: string
+      verification_type:
+        enum:
+        - registration
+        - password_reset
+        - update_phonenumber
+        example: registration or password_reset or update_phonenumber
+        type: string
+    required:
+    - identifier
+    - identifier_type
+    - token
+    - verification_type
+    type: object
+  server.WithdrawalReq:
+    properties:
+      account_number_id:
+        type: string
+      amount:
+        type: integer
+    required:
+    - account_number_id
+    - amount
+    type: object
+  server.loginUserEmailRequest:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 6
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  server.renewAccessTokenRequest:
+    properties:
+      refresh_token:
+        type: string
+    required:
+    - refresh_token
+    type: object
+info:
+  contact: {}
+  description: This is the API documentation for {{ cookiecutter.project_name }}.
+  title: {{ cookiecutter.project_name }} API
+  version: "1.0"
+paths:
+  /amenities/amenities-list:
+    get:
+      consumes:
+      - application/json
+      description: this list the property amenities
+      parameters:
+      - description: Page ID (min 1)
+        in: query
+        name: page_id
+        required: true
+        type: integer
+      - description: Page size (1-50)
+        in: query
+        name: page_size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: this list the property amenities
+      tags:
+      - Merchant
+  /amenities/create:
+    post:
+      consumes:
+      - application/json
+      description: this creates the property amenities
+      parameters:
+      - description: Create amenities
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.AmenitiesReq'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: this creates the property amenities
+      tags:
+      - Amenities
+  /amenities/delete:
+    delete:
+      consumes:
+      - application/json
+      description: this deletes the property amenities
+      parameters:
+      - description: Amenity UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: this deletes the property amenities
+      tags:
+      - Amenities
+  /amenities/get-amenities:
+    get:
+      consumes:
+      - application/json
+      description: get list the property amenities
+      parameters:
+      - description: Amenity UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: the property amenities
+      tags:
+      - Amenities
+  /amenities/update:
+    patch:
+      consumes:
+      - application/json
+      description: this updates the property amenities
+      parameters:
+      - description: Create amenities
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.UpdateAmenitiesReq'
+      - description: Amenity UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: this updates the property amenities
+      tags:
+      - Amenities
+  /auth/create-account:
+    post:
+      consumes:
+      - application/json
+      description: Register a user account using email
+      parameters:
+      - description: User account
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/server.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new user
+      tags:
+      - Auth
+  /auth/login-account:
+    post:
+      consumes:
+      - application/json
+      description: login a user account using email
+      parameters:
+      - description: user login
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.loginUserEmailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: login user with email
+      tags:
+      - Auth
+  /auth/refresh-token:
+    post:
+      consumes:
+      - application/json
+      description: refresh the auth token
+      parameters:
+      - description: Refresh Token
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.renewAccessTokenRequest'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: refresh token
+      tags:
+      - Auth
+  /auth/reset-password:
+    post:
+      consumes:
+      - application/json
+      description: change the user password
+      parameters:
+      - description: reset user password
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.ResetPasswordReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: change user password
+      tags:
+      - Auth
+  /bank-details/create:
+    post:
+      consumes:
+      - application/json
+      description: this creates the user bank details
+      parameters:
+      - description: Create user bank details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.BankDetailsReq'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: this creates the user bank details
+      tags:
+      - Bank Details
+  /bank-details/delete:
+    delete:
+      consumes:
+      - application/json
+      description: this deletes the Bank Details
+      parameters:
+      - description: bank detail UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: this deletes the Bank Details
+      tags:
+      - Bank Details
+  /bank-details/get/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get list the user bank details
+      parameters:
+      - description: Bank Detail ID UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: the user bank details
+      tags:
+      - Bank Details
+  /bank-details/list:
+    get:
+      consumes:
+      - application/json
+      description: this list the Bank details
+      parameters:
+      - description: Page ID (min 1)
+        in: query
+        name: page_id
+        required: true
+        type: integer
+      - description: Page size (1-50)
+        in: query
+        name: page_size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: this list the Bank details
+      tags:
+      - Bank Details
+  /booking/create:
+    post:
+      consumes:
+      - application/json
+      description: this creates booking record for the user
+      parameters:
+      - description: Create booking
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.BookingReqMap'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: this creates booking record
+      tags:
+      - Booking
+  /booking/get:
+    get:
+      consumes:
+      - application/json
+      description: get list get the booking records
+      parameters:
+      - description: Page ID (min 1)
+        in: query
+        name: page_id
+        required: true
+        type: integer
+      - description: Page Size (1-50)
+        in: query
+        name: page_size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: get the booking records
+      tags:
+      - Booking
+  /category/category-list:
+    get:
+      consumes:
+      - application/json
+      description: this list the property category
+      parameters:
+      - description: Page ID (min 1)
+        in: query
+        name: page_id
+        required: true
+        type: integer
+      - description: Page size (1-50)
+        in: query
+        name: page_size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: this list the property category
+      tags:
+      - Merchant
+  /category/create:
+    post:
+      consumes:
+      - application/json
+      description: this creates the property category
+      parameters:
+      - description: Create category
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.CategoryReq'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: this creates the property category
+      tags:
+      - Category
+  /category/delete:
+    delete:
+      consumes:
+      - application/json
+      description: this deletes the property category
+      parameters:
+      - description: category UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: this deletes the property category
+      tags:
+      - Category
+  /category/get-category:
+    get:
+      consumes:
+      - application/json
+      description: get list the property category
+      parameters:
+      - description: Category UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: the property category
+      tags:
+      - Category
+  /category/update:
+    patch:
+      consumes:
+      - application/json
+      description: this updates the property category
+      parameters:
+      - description: Create category
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.UpdateCategoryReq'
+      - description: category UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: this updates the property category
+      tags:
+      - Category
+  /conversations/{id}/{type}:
+    get:
+      consumes:
+      - application/json
+      description: this returns the conversations between user and merchant
+      parameters:
+      - description: conversation UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: conversation type (chat or negotiation)
+        in: path
+        name: type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: this returns the conversations between user and merchant
+      tags:
+      - Connversation
+  /conversations/list:
+    get:
+      consumes:
+      - application/json
+      description: this returns list of conversations for the user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: this returns list of conversations for the user
+      tags:
+      - Connversation
+  /otp/send-otp:
+    post:
+      consumes:
+      - application/json
+      description: Sends OTP via Email, SMS or WhatsApp
+      parameters:
+      - description: KYC identifier
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.OTPRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Send OTP for email or phone verification
+      tags:
+      - KYC
+  /otp/verify-otp:
+    post:
+      consumes:
+      - application/json
+      description: verify otp sent to the email or phone number
+      parameters:
+      - description: OTP verification
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.VerifyTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: verify otp sent to the users email or phone number
+      tags:
+      - KYC
+  /payments/all-transactions:
+    get:
+      consumes:
+      - application/json
+      description: get list get the booking records
+      parameters:
+      - description: Cursor ID (last payment record ID)
+        in: query
+        name: page_id
+        type: integer
+      - description: Page Size (1-50)
+        in: query
+        name: page_size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: get the booking records
+      tags:
+      - Payments
+  /payments/verify:
+    post:
+      consumes:
+      - application/json
+      description: this verifies a payment using the payment reference
+      parameters:
+      - description: Verify payment
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.VerifyPaymentReq'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: this verifies a payment using the payment reference
+      tags:
+      - Payments
+  /payments/withdraw-request:
+    post:
+      consumes:
+      - application/json
+      description: this allows property owners to withdraw funds from their wallet
+      parameters:
+      - description: Withdraw funds
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.WithdrawalReq'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: this allows property owners to withdraw funds from their wallet
+      tags:
+      - Payments
+  /property-bookmarked/create:
+    post:
+      consumes:
+      - application/json
+      description: this creates the property bookmark
+      parameters:
+      - description: Create bookmark
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.BookMarkedReq'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: this creates the property bookmark
+      tags:
+      - Property Bookmark
+  /property-bookmarked/delete:
+    delete:
+      consumes:
+      - application/json
+      description: this deletes the property bookmark
+      parameters:
+      - description: bookmark UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: this deletes the property bookmark
+      tags:
+      - Property Bookmark
+  /property-bookmarked/get/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get list the property GetPropertyBookmarked
+      parameters:
+      - description: Property ID UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: the property GetPropertyBookmarked
+      tags:
+      - Property Bookmark
+  /property-bookmarked/list:
+    get:
+      consumes:
+      - application/json
+      description: this list the property bookmarked
+      parameters:
+      - description: Page ID (min 1)
+        in: query
+        name: page_id
+        required: true
+        type: integer
+      - description: Page size (1-50)
+        in: query
+        name: page_size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: this list the property bookmarked
+      tags:
+      - Property Bookmark
+  /property/create:
+    post:
+      consumes:
+      - application/json
+      description: Upload property data
+      parameters:
+      - description: Create Property
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.CreatePropertyReq'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: Create property
+      tags:
+      - Property
+  /property/delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove a property and all related data
+      parameters:
+      - description: Property UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      - ApiKeyAuth: []
+      summary: Delete property
+      tags:
+      - Property
+  /property/get-owner-property/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Fetch property and all related arrays
+      parameters:
+      - description: Property UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      - ApiKeyAuth: []
+      summary: Get single property
+      tags:
+      - Property
+  /property/get-property/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Fetch property and all related arrays
+      parameters:
+      - description: Property UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      - ApiKeyAuth: []
+      summary: Get single property
+      tags:
+      - Property
+  /property/property-list:
+    get:
+      consumes:
+      - application/json
+      description: Filter properties using any fields (category, city, country, etc.)
+      parameters:
+      - description: Cursor ID (last property ID)
+        in: query
+        name: page_id
+        type: integer
+      - description: Page Size (1-50)
+        in: query
+        name: page_size
+        required: true
+        type: integer
+      - description: Search property name
+        in: query
+        name: search
+        type: string
+      - description: Minimum Price
+        in: query
+        name: min_price
+        type: integer
+      - description: Maximum Price
+        in: query
+        name: max_price
+        type: integer
+      - description: Category ID
+        in: query
+        name: category
+        type: string
+      - description: Amenity ID
+        in: query
+        name: amenity
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: List all properties with filters
+      tags:
+      - Merchant
+  /property/property-owner-list:
+    get:
+      consumes:
+      - application/json
+      description: Filter properties using any fields (category, city, country, etc.)
+      parameters:
+      - description: Cursor ID (last property ID)
+        in: query
+        name: page_id
+        type: integer
+      - description: Page Size (1-50)
+        in: query
+        name: page_size
+        required: true
+        type: integer
+      - description: Status
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: List all properties with filters
+      tags:
+      - Property
+  /property/update/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Update property details & related arrays
+      parameters:
+      - description: Property UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: update Property
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.UpdatePropertyReq'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      - ApiKeyAuth: []
+      summary: Update property
+      tags:
+      - Property
+  /reviews:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Review data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/server.CreateReviewRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/db.PropertyReview'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      - ApiKeyAuth: []
+      summary: Create property review
+      tags:
+      - Reviews
+  /reviews/{id}:
+    delete:
+      parameters:
+      - description: Review ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+      security:
+      - BearerAuth: []
+      - ApiKeyAuth: []
+      summary: Delete property review
+      tags:
+      - Reviews
+    get:
+      parameters:
+      - description: Review ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.PropertyReview'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      - ApiKeyAuth: []
+      summary: Get property review
+      tags:
+      - Reviews
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Review ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Review data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/server.UpdateReviewRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/db.PropertyReview'
+      security:
+      - BearerAuth: []
+      - ApiKeyAuth: []
+      summary: Update property review
+      tags:
+      - Reviews
+  /reviews/list:
+    get:
+      parameters:
+      - default: 10
+        description: Limit
+        in: query
+        name: limit
+        type: integer
+      - default: 0
+        description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/db.PropertyReview'
+            type: array
+      security:
+      - BearerAuth: []
+      - ApiKeyAuth: []
+      summary: List property reviews
+      tags:
+      - Reviews
+  /safety-items:
+    get:
+      consumes:
+      - application/json
+      description: get list the property safety items
+      parameters:
+      - description: safety item UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: the property safety items
+      tags:
+      - SafetyItems
+  /safety-items/create:
+    post:
+      consumes:
+      - application/json
+      description: this creates the property safety items
+      parameters:
+      - description: Create safety items
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.SafetyItemsReq'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: this creates the property safety items
+      tags:
+      - SafetyItems
+  /safety-items/delete:
+    delete:
+      consumes:
+      - application/json
+      description: this deletes the property safety items
+      parameters:
+      - description: Property UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: this deletes the property safety items
+      tags:
+      - SafetyItems
+  /safety-items/safety-items-list:
+    get:
+      consumes:
+      - application/json
+      description: this list the property safety items
+      parameters:
+      - description: Page ID (min 1)
+        in: query
+        name: page_id
+        required: true
+        type: integer
+      - description: Page size (1-50)
+        in: query
+        name: page_size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: this list the property safety items
+      tags:
+      - Merchant
+  /safety-items/update:
+    patch:
+      consumes:
+      - application/json
+      description: this updates the property safety items
+      parameters:
+      - description: Create safety items
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.UpdateSafetyItemsReq'
+      - description: safety item UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: this updates the property safety items
+      tags:
+      - SafetyItems
+  /user/change-password:
+    post:
+      consumes:
+      - application/json
+      description: change the user password
+      parameters:
+      - description: reset user password
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.ChangePasswordReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: change user password
+      tags:
+      - Auth
+  /user/edit-account:
+    patch:
+      consumes:
+      - application/json
+      description: edit the user profile
+      parameters:
+      - description: Edit the user
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.EditUserReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      - ApiKeyAuth: []
+      summary: edit the user profile
+      tags:
+      - Auth
+  /user/get-account:
+    get:
+      consumes:
+      - application/json
+      description: get the user profile
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: get the user account
+      tags:
+      - Auth
+  /ws/chat:
+    get:
+      consumes:
+      - application/json
+      description: |
+        This WebSocket endpoint is used to **start and continue a real-time chat**
+        between a **user (personal account)** and a **merchant**.
+
+        ---
+        Authentication
+        - This endpoint requires authentication.
+        - The authenticated user is resolved from the `Authorization` header.
+        - The role (user or merchant) is determined automatically from the account type.
+
+        ---
+        Conversation Resolution
+        - A chat is always between **one user and one merchant**.
+        - The `merchant_id` query parameter represents the **peer you want to chat with**.
+        - If the authenticated account is a **user**, `merchant_id` must be the merchant’s user ID.
+        - If the authenticated account is a **merchant**, `merchant_id` must be the user’s ID.
+
+        - The server automatically:
+        1. Finds an existing conversation between the two parties, or
+        2. Creates a new conversation if none exists.
+
+        ---
+        WebSocket Connection Flow
+        1. Client connects using:
+        `ws:// @Description<host>/ws/chat?merchant_id=<peer_uuid>`
+        2. Connection is upgraded to WebSocket (HTTP 101).
+        3. Messages sent by either party are:
+        - Saved to the database
+        - Broadcast in real-time to **both user and merchant**
+
+        ---
+        Sending Messages
+        Clients send JSON payloads in this format:
+
+        ```json
+
+        {
+        "content": "Hello, I’m interested in this property",
+        "property_id": "uuid-of-related-property",
+        "reply_to_message_id": "optional-message-uuid"
+        }
+
+        ```
+
+        Field descriptions:
+        - `content` (required): The message text.
+        - `property_id` (required): The property this chat or negotiation relates to.
+        - `reply_to_message_id` (optional): Used when replying to a specific message
+        (must reference an existing message ID in the same conversation).
+
+        ---
+        Receiving Messages
+        - Messages received from the socket are broadcast events.
+        - Each message includes sender info, timestamps, and reply relationships.
+        - Both parties receive all messages in the conversation in real time.
+
+        ---
+        Error Handling
+        - Invalid UUIDs, missing parameters, or auth failures return structured JSON errors.
+        - If the socket disconnects, the conversation remains intact and can be resumed.
+
+        ---
+        Use Cases
+        - User messaging a merchant about a property
+        - Merchant replying to user inquiries
+        - Negotiation chat flows
+        - Property-specific conversations
+      parameters:
+      - description: Access token
+        in: query
+        name: access_token
+        required: true
+        type: string
+      - description: Peer ID (Merchant ID if user is logged in, User ID if merchant
+          is logged in)
+        in: query
+        name: merchant_id
+        required: true
+        type: string
+      - description: Chat message payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.ChatReq'
+      produces:
+      - application/json
+      responses:
+        "101":
+          description: Switching Protocols
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Message a merchant or user (WebSocket chat)
+      tags:
+      - Ws
+  /ws/negotiation:
+    get:
+      consumes:
+      - application/json
+      description: |-
+        Opens a WebSocket connection for live negotiation.
+        Negotiation WebSocket Flow
+        This WebSocket allows users and merchants to negotiate pricing in real time.
+        ---
+        ### Authentication
+        - Requires JWT via `Authorization` header
+        ---
+        ### Connection URL
+        ```
+        ws://host/ws/negotiation?peer_id=<UUID>
+        ```
+        - Users pass merchant ID
+        - Merchants pass user ID
+        ---
+        ### Message Payload
+        ```json
+
+        {
+        "amount": 45000,
+        "property_id": "property-uuid",
+        "is_accepted": false
+        }
+
+        ```
+        ---
+        ### Acceptance Flow
+        - When `is_accepted = true`:
+        - Booking is created
+        - Wallet balances updated
+        - Both sockets are disconnected
+
+        ---
+        ### Broadcast
+        - Every negotiation update is broadcast to both parties
+
+        ---
+        ### Disconnect
+        - Connection closes automatically when negotiation is completed
+      parameters:
+      - description: Access token
+        in: query
+        name: access_token
+        required: true
+        type: string
+      - description: Merchant ID or User ID (UUID)
+        in: query
+        name: peer_id
+        required: true
+        type: string
+      - description: Negotiation message payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.NegotiateReq'
+      produces:
+      - application/json
+      responses:
+        "101":
+          description: Switching Protocols
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Negotiate pricing with a merchant (WebSocket)
+      tags:
+      - Ws
+securityDefinitions:
+  ApiKeyAuth:
+    description: Use your API key to authenticate requests.
+    in: header
+    name: api-access-key
+    type: apiKey
+  BearerAuth:
+    description: Use `Bearer <token>` for authentication.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

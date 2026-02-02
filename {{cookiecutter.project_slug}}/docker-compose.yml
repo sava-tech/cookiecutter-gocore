@@ -1,0 +1,51 @@
+services:
+  postgres:
+    image: postgres:{{ cookiecutter.postgresql_version }}-alpine3.21
+    container_name: {{ cookiecutter.project_slug }}_postgres
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB={{ cookiecutter.project_slug }}_db
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: {{ cookiecutter.project_slug }}_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  api:
+    container_name: {{ cookiecutter.project_slug }}_api
+    platform: linux/arm64
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: postgres://root:secret@postgres:5432/{{ cookiecutter.project_slug }}_db?sslmode=disable
+    env_file:
+      - ./.env
+    depends_on:
+      - postgres
+      - redis
+    entrypoint:
+      [
+        "/app/wait-for.sh",
+        "postgres:5432",
+        "--",
+        "/app/wait-for.sh",
+        "redis:6379",
+        "--",
+        "/app/start.sh",
+      ]
+    command: ["/app/main"]
+
+volumes:
+  postgres_data:
+  redis_data:

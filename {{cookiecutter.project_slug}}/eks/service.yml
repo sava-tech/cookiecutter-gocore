@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ cookiecutter.project_slug}}-api-service
+spec:
+  selector:
+    app: {{ cookiecutter.project_slug}}-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+      name: http-server
+  type: ClusterIP

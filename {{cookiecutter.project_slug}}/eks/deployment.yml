@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ cookiecutter.project_slug}}-api-deployment
+  labels:
+    app: {{ cookiecutter.project_slug}}-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ cookiecutter.project_slug}}-api
+  template:
+    metadata:
+      labels:
+        app: {{ cookiecutter.project_slug}}-api
+    spec:
+      containers:
+        - name: {{ cookiecutter.project_slug}}-api
+          image: 238611949570.dkr.ecr.eu-north-1.amazonaws.com/{{ cookiecutter.project_slug}}-backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http-server
+          envFrom:
+            - secretRef:
+                name: {{ cookiecutter.project_slug}}-env
