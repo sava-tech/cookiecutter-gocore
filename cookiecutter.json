@@ -1,12 +1,12 @@
 {
   "project_name": "gomacbot",
-  "project_slug": "{{ cookiecutter.project_name | lower | replace(' ', '-') }}",
-  "description": "Behold My Awesome Goland Project!",
+  "project_slug": "gomacbot",
+  "description": "Behold My Awesome Golang Project!",
   "author_name": "Michael Assanama",
   "github_username": "your-github-handle",
-  "module_path": "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}",
-  "email": "{{ cookiecutter.author_name.lower() | trim() |replace(' ', '-') }}@{{ cookiecutter.domain_name.lower() | trim() }}",
-  "go_version": "1.25.4",
+  "module_path": "github.com/your-github-handle/project-name",
+  "email": "you@example.com",
+  "go_version": "1.22",
   "postgresql_version": ["17", "16", "15", "14"],
   "cloud_provider": ["AWS", "Railway", "Azure", "Digitalocean", "None"],
   "mail_service": [
