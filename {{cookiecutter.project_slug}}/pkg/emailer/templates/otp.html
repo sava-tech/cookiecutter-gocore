@@ -390,7 +390,7 @@
                                       <td
                                         class="xf s l p7s dt c0 ft ce fl gq pl"
                                       >
-                                        {{ .Token }}
+                                       {{ '{{ .Token }}' }} 
                                       </td>
                                     </tr>
                                     <tr>
@@ -570,7 +570,7 @@
                         contact our support team!
                         <br />
                         <br />
-                        QICTIK USA Inc, 4 World Trade Center, 150 Greenwich
+                        {{ cookiecutter.project_name }} USA Inc, 4 World Trade Center, 150 Greenwich
                         Street, 62nd Floor, New York, NY 10007, USA
                       </p>
                       <div role="separator" style="line-height: 16px">‍</div>
@@ -650,7 +650,7 @@
                       </table>
                       <div role="separator" style="line-height: 16px">‍</div>
                       <p class="o sm">
-                        This message was sent to {{ .Identifier }}. If you don't
+                        This message was sent to {{ '{{ .Identifier }}' }}. If you don't
                         want to receive these emails from QICTIK in the future,
                         you can
                         <a
