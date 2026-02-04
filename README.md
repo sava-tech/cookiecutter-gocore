@@ -207,6 +207,10 @@ cookiecutter --version
 ```bash
 cookiecutter https://github.com/michaelassa01/cookiecutter-gocore
 ```
+you can install vai versioning
+```bash
+cookiecutter https://github.com/michaelassa01/cookiecutter-gocore --checkout v0.1.0
+```
 You'll be prompted for some values. Provide them, then a Golang project will be created for you.
 
 Warning: After this point, change 'Michael Assanama', 'michaelassa01', etc to your own information.
