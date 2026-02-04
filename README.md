@@ -1,4 +1,4 @@
-# Cookiecutter-Gocore — Golang REST API Boilerplate
+# Cookiecutter GoCore — Golang REST API Boilerplate
 
 ![Go](https://img.shields.io/badge/Go-1.22+-00ADD8?style=flat&logo=go)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-336791?style=flat&logo=postgresql)
