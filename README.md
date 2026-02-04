@@ -207,7 +207,7 @@ cookiecutter --version
 ```bash
 cookiecutter https://github.com/michaelassa01/cookiecutter-gocore
 ```
-you can install vai versioning
+you can install via versioning
 ```bash
 cookiecutter https://github.com/michaelassa01/cookiecutter-gocore --checkout v0.1.0
 ```
