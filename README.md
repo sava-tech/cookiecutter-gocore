@@ -127,89 +127,23 @@ Each layer has **one responsibility — nothing more**, keeping your code clean 
 ## Getting Started
 
 ### Install Cookiecutter (Recommended)
-### Windows
-- **Option 1 :** Using Python and pip  
+
+- First, get Cookiecutter. Trust me, it's awesome:
 
 ```bash
-python --version  # Ensure Python is installed
-```
-```
-pip install --user cookiecutter
-```
-```
-cookiecutter --version
-```
-
-- **Option 2 :** Using Chocolatey  
-
-```bash
-choco install cookiecutter
-```
-```
-cookiecutter --version
-```
-
-### macOS
-- **Option 1 :** Using Homebrew  
-
-```bash
-brew install cookiecutter
-```
-```
-cookiecutter --version
-```
-
-- **Option 2 :** Using Python and pip
-
-```bash
-python3 --version
-```
-```
-pip3 install --user cookiecutter
-```
-```
-cookiecutter --version
-```
-
-
-### Ubuntu / Linux
-- **Option 1 :** Using apt + pip 
-
-```bash
-sudo apt update
-```
-```
-sudo apt install -y python3 python3-pip
-```
-```
-pip3 install --user cookiecutter
-```
-```
-cookiecutter --version
-```
-
-- **Option 2 :** Using pipx (isolated install)
-
-```bash
-python3 -m pip install --user pipx
-```
-```
-python3 -m pipx ensurepath
-```
-```
-pipx install cookiecutter
+uv tool install "cookiecutter>=1.7.0"
 ```
 ```
 cookiecutter --version
 ```
 
 ## Generate a New Project
-```bash
-cookiecutter https://github.com/michaelassa01/cookiecutter-gocore
+``` 
+uvx cookiecutter https://github.com/sava-tech/cookiecutter-gocore
 ```
 you can install via versioning
 ```bash
-cookiecutter https://github.com/michaelassa01/cookiecutter-gocore --checkout v0.1.0
+uvx cookiecutter https://github.com/sava-tech/cookiecutter-gocore --checkout v0.1.0
 ```
 You'll be prompted for some values. Provide them, then a Golang project will be created for you.
 

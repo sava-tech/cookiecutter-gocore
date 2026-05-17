@@ -19,27 +19,44 @@ all: build test ## Build and test the application
 build: ## Build the Go binary
 	@echo "Building..."
 	
-	
 	@go build -o main cmd/api/main.go
+
+deps: ## Download and tidy Go dependencies
+	@echo "Downloading Go modules..."
+	go mod tidy
+	@echo "Go modules ready"
 
 install-dependencies: ## Install all required dependencies for the project
 # 	sudo apt install ca-certificates
+	@$(MAKE) deps
+	@echo "  → Installing development tools..."
+	@# Install golangci-lint for linting
+	@which golangci-lint > /dev/null || (echo "Installing golangci-lint..." && go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest)
+	@# Install mockgen for mocking (optional)
+	@which mockgen > /dev/null || (echo "Installing mockgen..." && go install github.com/golang/mock/mockgen@latest)
+
 #gomigrate
 	go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 	go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
 	go install github.com/swaggo/swag/cmd/swag@latest
+
 #for Gin
 	go get github.com/swaggo/gin-swagger
 	go get github.com/swaggo/files
+
 #firebase oauth
 	go get firebase.google.com/go/v4
 	go get google.golang.org/api/option
+	@# Install mockgen for mocking (optional)
+	@which mockgen > /dev/null || (echo "Installing mockgen..." && go install github.com/golang/mock/mockgen@latest)
+	@echo "✅ All dependencies installed!"
 
 
 # Run the application
 run: ## Run the Go application
 	@go run cmd/api/main.go
 
+{% if cookiecutter.use_docker == 'y' %}
 docker-run: ## Build and start Docker containers
 	@if docker compose up --build 2>/dev/null; then \
 		: ; \
@@ -57,10 +74,13 @@ docker-down: ## Stop Docker containers
 		docker-compose down; \
 	fi
 
+{% endif %}
+
 # Test the application
 test: ## Run all tests
 	@echo "Testing..."
 	@go test ./... -v
+
 # Integrations Tests for the application
 itest:
 	@echo "Running integration tests..."

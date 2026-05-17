@@ -21,7 +21,9 @@ services:
 
   api:
     container_name: {{ cookiecutter.project_slug }}_api
+    {% if cookiecutter.windows == "n" %}
     platform: linux/arm64
+    {% endif %}
     build:
       context: .
       dockerfile: Dockerfile

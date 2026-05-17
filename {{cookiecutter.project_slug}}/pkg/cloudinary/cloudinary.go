@@ -12,9 +12,9 @@ type CloudinaryService struct {
 
 func NewCloudinaryService() (*CloudinaryService, error) {
 	cld, err := cloudinary.NewFromParams(
-		"djhxnetly",
-		"158867669949168",
-		"Z004YVSE9e6ZQJblqw8UyYVqukQ",
+		"your_cloud_name",
+		"your_api_key",
+		"your_api_secret",
 	)
 	if err != nil {
 		return nil, err
