@@ -29,5 +29,7 @@ if [ "$PRODUCTION" = "true" ]; then
     exec /app/main
 else
     echo "Running in DEVELOPMENT mode with Air"
+    echo "✅ server: http://localhost:8080"
+    echo "✅ docs: http://localhost:8080/swagger/index.html"
     exec air -c .air.toml
 fi

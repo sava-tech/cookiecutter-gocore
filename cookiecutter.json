@@ -6,10 +6,13 @@
   "github_username": "michaelassa01",
   "domain_name": "example.com",
   "email": "{{ cookiecutter.author_name.lower() | trim() |replace(' ', '-') }}@{{ cookiecutter.domain_name.lower() | trim() }}",
-  "go_version": "1.25.4",
-  "postgresql_version": ["17", "16", "15", "14"],
+  "postgresql_version": ["18", "17", "16", "15", "14"],
   "cloud_provider": ["AWS", "Railway", "Azure", "Digitalocean", "None"],
   "module_path": "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}",
+  "editor": ["None", "PyCharm", "VS Code"],
+  "windows": "n",
+  "use_docker": "n",
+  "auto_install_deps": "n",
   "mail_service": [
     "Mailgun",
     "Amazon SES",
@@ -18,6 +21,6 @@
     "Sendgrid",
     "Other SMTP"
   ],
-  "ci_tool": ["None", "Travis", "Gitlab", "Github", "Drone"],
-  "license": "MIT"
+  "use_mailpit": "n",
+  "ci_tool": ["None", "Travis", "Gitlab", "Github", "Drone"]
 }

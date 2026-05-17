@@ -1,5 +1,5 @@
 # Build stage
-FROM golang:{{ cookiecutter.go_version }}-alpine3.22 AS builder
+FROM golang:1.25.4-alpine3.22 AS builder
 
 # Install certificates (not strictly needed in builder, but okay)
 RUN apk update && apk add --no-cache ca-certificates curl
@@ -11,8 +11,9 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 # Install Air for live reloading
-ENV GOBIN=/go/bin
-RUN go install github.com/air-verse/air@latest
+RUN if ! command -v air >/dev/null 2>&1; then \
+    go install github.com/air-verse/air@latest; \
+    fi
 # Now copy the rest of the code
 COPY . .
 
@@ -22,9 +23,10 @@ RUN apk add curl
 RUN go build -o main cmd/api/main.go
 
 # Download golang-migrate binary
-RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.18.3/migrate.linux-amd64.tar.gz \
-    | tar xvz \
-    && chmod +x migrate
+RUN if [ ! -f /usr/local/bin/migrate ]; then \
+    curl -L https://github.com/golang-migrate/migrate/releases/download/v4.18.3/migrate.linux-amd64.tar.gz \
+    | tar xvz && mv migrate /usr/local/bin/migrate; \
+    fi
 
 
 # Run stage
@@ -44,11 +46,12 @@ RUN apt-get update && apt-get install -y netcat-openbsd \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /app/main .
-COPY --from=builder /app/migrate ./migrate
+COPY --from=builder /usr/local/bin/migrate ./migrate
+
 # Install Air binary
 COPY --from=builder /go/bin/air /usr/local/bin/air
 
-COPY .env .
+# COPY .env .
 COPY pkg/emailer/templates pkg/emailer/templates
 COPY start.sh .
 COPY wait-for.sh .
