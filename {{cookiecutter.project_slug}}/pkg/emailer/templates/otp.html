@@ -326,7 +326,7 @@
                                     <tr>
                                       <td>
                                         <a
-                                          href="https://{{ cookiecutter.project_slug}}.com"
+                                          href="https://{{ cookiecutter.project_name }}.com"
                                         >
                                           <picture>
                                             <!-- <source srcset="https://res.cloudinary.com/dxa66e5ic/image/upload/v1726656098/email-preview/product-flows-secure-login/build_preview/images/logo-dark_2x.png" media="(prefers-color-scheme: dark)"> -->
@@ -390,7 +390,7 @@
                                       <td
                                         class="xf s l p7s dt c0 ft ce fl gq pl"
                                       >
-                                       {{ '{{ .Token }}' }} 
+                                        {{ .Token }}
                                       </td>
                                     </tr>
                                     <tr>
@@ -413,7 +413,7 @@
                                     <tr>
                                       <td>
                                         <a
-                                          href="{{ '{{ .Link }}' }}"
+                                          href="{{ .Link }}"
                                           class="f gk d xf t l p7s qi pl c8w fj"
                                           style="
                                             background-color: #0047ff;
@@ -444,7 +444,7 @@
                                           <br />
                                           Just reply to this email or contact
                                           <a
-                                            href="support@{{ cookiecutter.project_slug}}.com"
+                                            href="support@{{ cookiecutter.project_name }}.com"
                                             class="d f7 c8w yq u0 og"
                                           >
                                             support@{{ cookiecutter.project_name
@@ -474,7 +474,7 @@
                 <tbody>
                   <tr>
                     <td class="r9 e">
-                      <a href="https://{{ cookiecutter.project_slug}}.com">
+                      <a href="https://{{ cookiecutter.project_name }}.com">
                         <picture>
                           <!-- <source srcset="https://res.cloudinary.com/dxa66e5ic/image/upload/v1726656098/email-preview/product-flows-secure-login/build_preview/images/logo-footer-dark_2x.png" media="(prefers-color-scheme: dark)"> -->
                           <img
@@ -495,7 +495,7 @@
                           <tr>
                             <td class="gk eo">
                               <a
-                                href="https://{{ cookiecutter.project_slug}}.com"
+                                href="https://{{ cookiecutter.project_name }}.com"
                                 class="gk u6 b x7 vn p3 l"
                               >
                                 Shop
@@ -520,7 +520,7 @@
                             </td>
                             <td class="gk eo">
                               <a
-                                href="https://twitter.com/{{ cookiecutter.project_slug}}"
+                                href="https://twitter.com/{{ cookiecutter.project_name }}"
                                 class="x u6 b x7 vn p3 l"
                               >
                                 Twitter
@@ -545,7 +545,7 @@
                             </td>
                             <td class="gk eo">
                               <a
-                                href="https://instagram.com/{{ cookiecutter.project_slug}}"
+                                href="https://instagram.com/{{ cookiecutter.project_name }}"
                                 class="x u6 b x7 vn p3 l"
                               >
                                 Instagram
@@ -570,8 +570,9 @@
                         contact our support team!
                         <br />
                         <br />
-                        {{ cookiecutter.project_name }} USA Inc, 4 World Trade Center, 150 Greenwich
-                        Street, 62nd Floor, New York, NY 10007, USA
+                        {{ cookiecutter.project_name }} USA Inc, 4 World Trade
+                        Center, 150 Greenwich Street, 62nd Floor, New York, NY
+                        10007, USA
                       </p>
                       <div role="separator" style="line-height: 16px">‍</div>
                       <table
@@ -584,7 +585,7 @@
                           <tr>
                             <td class="gk eo">
                               <a
-                                href="https://{{ cookiecutter.project_slug}}.com"
+                                href="https://{{ cookiecutter.project_name }}.com"
                                 class="x u6 b x7 vn p3 l"
                               >
                                 Terms &amp; conditions
@@ -609,7 +610,7 @@
                             </td>
                             <td class="gk eo">
                               <a
-                                href="https://{{ cookiecutter.project_slug}}.com"
+                                href="https://{{ cookiecutter.project_name }}.com"
                                 class="x u6 b x7 vn p3 l"
                               >
                                 Privacy policy
@@ -634,7 +635,7 @@
                             </td>
                             <td class="gk eo">
                               <a
-                                href="https://{{ cookiecutter.project_slug}}.com"
+                                href="https://{{ cookiecutter.project_name }}.com"
                                 class="x u6 b x7 vn p3 l"
                               >
                                 Contact us
@@ -650,17 +651,17 @@
                       </table>
                       <div role="separator" style="line-height: 16px">‍</div>
                       <p class="o sm">
-                        This message was sent to {{ '{{ .Identifier }}' }}. If you don't
+                        This message was sent to {{ .Identifier }}. If you don't
                         want to receive these emails from QICTIK in the future,
                         you can
                         <a
-                          href="https://{{ cookiecutter.project_slug}}.com"
+                          href="https://{{ cookiecutter.project_name }}.com"
                           class="b x7 vn p3 l"
                           >edit your profile</a
                         >
                         or
                         <a
-                          href="https://{{ cookiecutter.project_slug}}.com"
+                          href="https://{{ cookiecutter.project_name }}.com"
                           class="b x7 vn p3 l"
                           >unsubscribe</a
                         >.

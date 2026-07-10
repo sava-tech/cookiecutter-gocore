@@ -34,6 +34,10 @@ type Config struct {
 	TermiiApiKey             string        `mapstructure:"TERMII_API_KEY"`
 	SENDER                   string        `mapstructure:"SENDER"`
 	SMSProvider              string        `mapstructure:"SMSPROVIDER"`
+	UseMailpit               bool          `mapstructure:"USE_MAILPIT"`
+	MailpitHost              string        `mapstructure:"MAILPIT_HOST"`
+	MailpitPort              string        `mapstructure:"MAILPIT_PORT"`
+	EmailFrom                string        `mapstructure:"EMAIL_FROM"`
 	// Twilio Config
 	TwilioSID         string `mapstructure:"TWILIO_ACCOUNT_SID"`
 	TwilioAuthToken   string `mapstructure:"TWILIO_AUTH_TOKEN"`
@@ -48,6 +52,15 @@ type Config struct {
 	FlutterWaveBaseURL   string `mapstructure:"FLUTTERWAVE_BASE_URL"`
 	PaystackSecretKey    string `mapstructure:"PAYSTACK_SECRET_KEY"`
 	PaystackBaseURL      string `mapstructure:"PAYSTACK_BASE_URL"`
+
+	// Social Auth (Goth)
+	GoogleKey    string `mapstructure:"GOOGLE_CLIENT_ID"`
+	GoogleSecret string `mapstructure:"GOOGLE_CLIENT_SECRET"`
+	AppleKey     string `mapstructure:"APPLE_CLIENT_ID"`
+	AppleSecret  string `mapstructure:"APPLE_CLIENT_SECRET"`
+	SocialCallbackURL string `mapstructure:"SOCIAL_CALLBACK_URL"`
+	// Session secret for Goth
+	SessionSecret string `mapstructure:"SESSION_SECRET"`
 }
 
 // LoadConfig reads configuration from file or environment variables
@@ -63,6 +76,10 @@ func LoadConfig(path string) (config Config, err error) {
 	viper.BindEnv("DB_SOURCE")
 	viper.BindEnv("SERVER_ADDRESS")
 	viper.BindEnv("TOKEN_SYMMETRIC_KEY")
+	viper.BindEnv("USE_MAILPIT")
+	viper.BindEnv("MAILPIT_HOST")
+	viper.BindEnv("MAILPIT_PORT")
+	viper.BindEnv("EMAIL_FROM")
 
 	// ======================
 	// Auth / Tokens
@@ -70,6 +87,19 @@ func LoadConfig(path string) (config Config, err error) {
 	viper.BindEnv("ACCESS_TOKEN_DURATION")
 	viper.BindEnv("REFRESH_TOKEN_DURATION")
 	viper.BindEnv("VERIFICATION_CODE_DURATION")
+
+	// ======================
+	// SocialAuth / Tokens
+	// ======================
+	viper.BindEnv("GOOGLE_CLIENT_ID")
+	viper.BindEnv("GOOGLE_CLIENT_SECRET")
+	viper.BindEnv("APPLE_CLIENT_ID")
+	viper.BindEnv("APPLE_CLIENT_SECRET")
+	viper.BindEnv("APPLE_TEAM_ID")
+	viper.BindEnv("APPLE_KEY_ID")
+	viper.BindEnv("APPLE_PRIVATE_KEY")
+	viper.BindEnv("SOCIAL_CALLBACK_URL")
+	viper.BindEnv("SESSION_SECRET")
 
 	// ======================
 	// Redis
@@ -144,4 +174,3 @@ func LoadConfig(path string) (config Config, err error) {
 
 	return config, nil
 }
-

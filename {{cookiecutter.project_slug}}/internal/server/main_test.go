@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/stretchr/testify/require"
-	"{{ cookiecutter.module_path }}/utils"
+	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/utils"
 )
 
 func NewTestServer(t *testing.T, store *pgxpool.Pool) *Server {

@@ -1,9 +1,9 @@
 # Simple Makefile for a Go project
 SHELL := /bin/bash
-PROJECTNAME := "{{ cookiecutter.project_slug }}"
+PROJECTNAME := "{{ cookiecutter.project_name }}"
 
 help:
-	@echo "📦 Available make commands:"
+	@echo "Available make commands:"
 	@echo
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
 		sort | \
@@ -34,29 +34,35 @@ install-dependencies: ## Install all required dependencies for the project
 	@which golangci-lint > /dev/null || (echo "Installing golangci-lint..." && go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest)
 	@# Install mockgen for mocking (optional)
 	@which mockgen > /dev/null || (echo "Installing mockgen..." && go install github.com/golang/mock/mockgen@latest)
-
-#gomigrate
+#	gomigrate
 	go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 	go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
 	go install github.com/swaggo/swag/cmd/swag@latest
-
-#for Gin
+	go install github.com/hibiken/asynq@latest
+	go get github.com/gorilla/sessions
+#	for Gin
 	go get github.com/swaggo/gin-swagger
 	go get github.com/swaggo/files
-
-#firebase oauth
+# 	Install Goth
+	@echo "Installing Goth and providers..."
+	@go get github.com/markbates/goth
+	@go get github.com/markbates/goth/providers/google
+	@go get github.com/markbates/goth/providers/github
+	@go mod tidy
+	@echo "Goth dependencies installed!"
+#	firebase oauth
 	go get firebase.google.com/go/v4
 	go get google.golang.org/api/option
 	@# Install mockgen for mocking (optional)
 	@which mockgen > /dev/null || (echo "Installing mockgen..." && go install github.com/golang/mock/mockgen@latest)
-	@echo "✅ All dependencies installed!"
+	@echo "All dependencies installed!"
+
 
 
 # Run the application
 run: ## Run the Go application
 	@go run cmd/api/main.go
 
-{% if cookiecutter.use_docker == 'y' %}
 docker-run: ## Build and start Docker containers
 	@if docker compose up --build 2>/dev/null; then \
 		: ; \
@@ -73,8 +79,6 @@ docker-down: ## Stop Docker containers
 		echo "Falling back to Docker Compose V1"; \
 		docker-compose down; \
 	fi
-
-{% endif %}
 
 # Test the application
 test: ## Run all tests
@@ -109,12 +113,19 @@ watch:
         fi
 
 
-module: ## Create a new module. Usage: make module name=<module_name>
+create-module: ## Create a new module. Usage: make create-module name=<module_name>
 	@if [ -z "$(name)" ]; then \
-		echo "Please provide a module name. Example: make module name=users"; \
+		echo "Please provide a module name. Example: make create-module name=users"; \
 		exit 1; \
 	fi
 	@bash scripts/create_sqlc_module.sh "$(name)" "$(PROJECTNAME)"
+
+delete-module: ## Delete a module and its SQLC config. Usage: make delete-module name=<module_name>
+	@if [ -z "$(name)" ]; then \
+		echo "Please provide a module name. Example: make delete-module name=users"; \
+		exit 1; \
+	fi
+	@python3 scripts/delete_module.py "$(name)"
 
 
 # to tidy the code base by installing dependencies
@@ -123,11 +134,11 @@ tidy:
 
 migration: ## Create a new migration. Usage: make migration module=<module> name=<migration_name>
 	@if [ -z "$(module)" ]; then \
-		echo "❌ Please provide a module. Example: make migration module=users name=add_profile_table"; \
+		echo "Please provide a module. Example: make migration module=users name=add_profile_table"; \
 		exit 1; \
 	fi
 	@if [ -z "$(name)" ]; then \
-		echo "❌ Please provide a migration name. Example: make migration module=users name=add_profile_table"; \
+		echo "Please provide a migration name. Example: make migration module=users name=add_profile_table"; \
 		exit 1; \
 	fi
 	@if [ ! -d "internal/$(module)" ]; then \
@@ -159,9 +170,11 @@ db_schema:
 	dbml2sql internal/doc/db.dbml -o internal/doc/db.sql
 
 swagger-doc:
-	swag init -g cmd/main.go
+	@echo "Generating Swagger documentation..."
+	@swag init -g cmd/api/main.go --parseDependency --parseInternal --output ./docs
+	@echo "Swagger documentation generated at ./docs"
 
 mock:
-	mockgen -destination db/mock/store.go  github.com/michaelassa01/{{ cookiecutter.project_name }}/db/models Store
+	mockgen -package mock_db -destination internal/users/mock/users.go github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users/domain Repository
 
 .PHONY: all build run test clean watch docker-run docker-down itest install-dependencies test tidy swagger-doc createmigration module sqlc migration db_docs db_schema mock

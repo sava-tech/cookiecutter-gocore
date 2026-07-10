@@ -1,39 +1,28 @@
 package emailer
 
 import (
-	"fmt"
-
-	c "{{ cookiecutter.module_path }}/utils"
+	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/pkg/emailer/mailpit"
+	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/pkg/emailer/mailtrap"
+	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/utils"
 )
 
 type Config struct {
 	Provider          string
 	MailtrapAuthToken string
 	SendGridAuthToken string
-	SMSProvider       string
-	TermiiApiKey      string
 }
 
-func NewMailer(cfg c.Config) (Mailer, error) {
+func NewMailer(cfg utils.Config) (Mailer, error) {
 	switch cfg.Provider {
 	case "mailtrap":
-		return &MailtrapMailer{ApiKey: cfg.MailtrapAuthToken, Config: cfg}, nil
-
-	//case "sendgrid":
-	//	return &SendGridMailer{ApiKey: cfg.SendGridAuthToken}, nil
+		return &mailtrap.MailtrapMailer{ApiKey: cfg.MailtrapAuthToken, Config: cfg}, nil
 
 	default:
-		return nil, fmt.Errorf("unsupported mailer provider: %s", cfg.Provider)
-	}
-}
-
-func NewSMSMessageSender(cfg c.Config) (SMSender, error) {
-	switch cfg.SMSProvider {
-	case "termii":
-		return &TermiiSender{APIKey: cfg.TermiiApiKey, Config: cfg}, nil
-
-	default:
-		return nil, fmt.Errorf("unsupported mailer provider: %s", cfg.Provider)
-
+		return &mailpit.MailpitMailer{
+			Config:   cfg,
+			From:     cfg.EmailFrom,
+			SmtpHost: cfg.MailpitHost,
+			SmtpPort: cfg.MailpitPort,
+		}, nil
 	}
 }

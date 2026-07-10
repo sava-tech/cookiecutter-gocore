@@ -1,7 +1,5 @@
 # ![{{ cookiecutter.project_name }} Logo](https://via.placeholder.com/20) {{ cookiecutter.project_name }}
 
->{{ cookiecutter.description }}
-
 > A modular Go backend boilerplate built with **Domain-Driven Design (DDD)**, **Gin**, **SQLC**, and **Postgres** — ready for multi-module projects.
 
 [![Go](https://img.shields.io/badge/Go-1.21-blue)](https://golang.org)  

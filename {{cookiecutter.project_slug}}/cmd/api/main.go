@@ -1,7 +1,16 @@
-// @title {{ cookiecutter.project_name }} API
+// @title cnn-nigeria API
 // @version 1.0
-// @description This is the API documentation for {{ cookiecutter.project_name }}.
-// @BasePath /
+// @description This is the API documentation for cnn-nigeria.
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @contact.email support@cnn-nigeria.com
+
+// @license.name MIT
+// @license.url https://opensource.org/licenses/MIT
+
+// @host localhost:8080
+// @BasePath /api/v1
 
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header
@@ -11,7 +20,7 @@
 // @securityDefinitions.apikey BearerAuth
 // @in header
 // @name Authorization
-// @description Use `Bearer <token>` for authentication.
+// @description Type "Bearer" followed by a space and JWT token.
 
 package main
 
@@ -20,9 +29,9 @@ import (
 	"log"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-	// _ "{{ cookiecutter.module_path }}/docs"
-	"{{ cookiecutter.module_path }}/internal/server"
-	"{{ cookiecutter.module_path }}/utils"
+	_ "github.com/{{ cookiecutter.github_username }}/cnn-nigeria/docs"
+	"github.com/{{ cookiecutter.github_username }}/cnn-nigeria/internal/server"
+	"github.com/{{ cookiecutter.github_username }}/cnn-nigeria/utils"
 )
 
 var (

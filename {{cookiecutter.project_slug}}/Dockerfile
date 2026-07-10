@@ -10,12 +10,28 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 
+# Install additional dependencies (add this)
+RUN go get github.com/markbates/goth && \
+    go get github.com/markbates/goth/providers/google && \
+    go get github.com/markbates/goth/providers/github && \
+    go get github.com/gorilla/sessions && \
+    go mod tidy
+
 # Install Air for live reloading
 RUN if ! command -v air >/dev/null 2>&1; then \
     go install github.com/air-verse/air@latest; \
     fi
+
+# install swag for swagger docs generation
+RUN if ! command -v swag >/dev/null 2>&1; then \
+    go install github.com/swaggo/swag/cmd/swag@latest; \
+    fi
+
 # Now copy the rest of the code
 COPY . .
+
+# generate swagger docs and fix compatibility
+RUN swag init -g cmd/api/main.go --parseDependency --parseInternal --output ./docs
 
 RUN apk add curl
 
@@ -50,6 +66,9 @@ COPY --from=builder /usr/local/bin/migrate ./migrate
 
 # Install Air binary
 COPY --from=builder /go/bin/air /usr/local/bin/air
+
+# Copy the generated swagger docs
+COPY --from=builder /app/docs ./docs
 
 # COPY .env .
 COPY pkg/emailer/templates pkg/emailer/templates

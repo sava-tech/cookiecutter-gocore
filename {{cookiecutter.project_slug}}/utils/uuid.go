@@ -19,3 +19,12 @@ func ConvertToPgUUIDFromString(id string) (pgtype.UUID, error) {
     }
     return ConvertToPgUUID(parsedUUID), nil
 }   
+
+func ConvertFromPgUUID(pgUUID pgtype.UUID) (uuid.UUID, error) {
+    if !pgUUID.Valid {
+        return uuid.Nil, nil // or return an error if you prefer
+    }
+    var id uuid.UUID
+    copy(id[:], pgUUID.Bytes[:]) // copy bytes from fixed array to slice
+    return id, nil
+}

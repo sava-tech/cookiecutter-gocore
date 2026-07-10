@@ -48,64 +48,50 @@ else
     exit 1
 fi
 
-# Step 2: Remove SQLC configuration for this module
+# Step 2: Remove SQLC configuration for this module using sed
 if [ -f "sqlc.yaml" ]; then
     echo -e "${GREEN}Removing SQLC configuration for module: $MODULE_NAME${NC}"
     
-    # Create a temporary file without the module's SQLC config
-    awk -v module="$MODULE_NAME" '
-    BEGIN { skip=0; printed_header=0 }
-    /^sql:/ { print; next }
-    /^  - engine:/ { 
-        # Store current line
-        current=$0
-        # Look ahead to see if this is our module
-        getline next_line
-        if (next_line ~ "schema: ./internal/" module "/migration") {
-            skip=1
-            # Skip until we find the next engine or end of file
-            while (getline > 0) {
-                if ($0 ~ /^  - engine:/) {
-                    # Found next engine, reprocess this line
-                    skip=0
-                    print current
-                    print $0
-                    break
-                }
+    # Create a backup
+    cp sqlc.yaml sqlc.yaml.bak
+    
+    # Use sed to remove the module section
+    # This removes from "- engine:" until the next "- engine:" or end of file
+    sed -i "/^  - engine:/,/^  - engine:/{
+        /^  - engine:/{
+            :start
+            N
+            /schema: .\/internal\/$MODULE_NAME\/migration/{
+                :delete
+                N
+                /^  - engine:/!b delete
+                d
             }
-            if (skip) {
-                # End of file reached
-                break
-            }
-        } else {
-            # Not our module, print both lines
-            print current
-            print next_line
+            /^  - engine:/!b start
         }
-        next
-    }
-    {
-        if (!skip) print
-    }' sqlc.yaml > sqlc.yaml.tmp
+    }" sqlc.yaml
     
-    # Replace original file with cleaned version
-    mv sqlc.yaml.tmp sqlc.yaml
+    # Clean up empty lines
+    sed -i '/^[[:space:]]*$/d' sqlc.yaml
     
-    # Clean up empty sqlc.yaml or remove if only the header remains
-    if [ ! -s sqlc.yaml ] || [ "$(wc -l < sqlc.yaml)" -le 1 ]; then
-        echo -e "${YELLOW}No modules left in sqlc.yaml, removing file${NC}"
+    # Check if sqlc.yaml is now empty or only has header
+    if [ ! -s sqlc.yaml ] || [ "$(grep -c "engine:" sqlc.yaml)" -eq 0 ]; then
+        # Remove file if no engines left
         rm sqlc.yaml
+        echo -e "${GREEN}Removed empty sqlc.yaml${NC}"
+    else
+        echo -e "${GREEN}SQLC configuration removed for module: $MODULE_NAME${NC}"
     fi
     
-    echo -e "${GREEN}SQLC configuration removed for module: $MODULE_NAME${NC}"
+    rm -f sqlc.yaml.bak
 else
     echo -e "${YELLOW}sqlc.yaml not found, skipping SQLC cleanup${NC}"
 fi
 
-# Step 3: Remove any references in router initialization
+# Step 3: Check for references
 echo -e "${GREEN}Checking for references in code...${NC}"
 
-# Check main.go for module references
+# Check main.go
 if [ -f "cmd/api/main.go" ]; then
     if grep -q "internal/$MODULE_NAME" cmd/api/main.go; then
         echo -e "${YELLOW}Found references to '$MODULE_NAME' in cmd/api/main.go${NC}"
@@ -113,7 +99,7 @@ if [ -f "cmd/api/main.go" ]; then
     fi
 fi
 
-# Check router.go if it exists
+# Check router.go
 if [ -f "internal/router/router.go" ]; then
     if grep -q "internal/$MODULE_NAME" internal/router/router.go; then
         echo -e "${YELLOW}Found references to '$MODULE_NAME' in internal/router/router.go${NC}"
@@ -121,23 +107,13 @@ if [ -f "internal/router/router.go" ]; then
     fi
 fi
 
-# Step 4: Run go mod tidy to clean up dependencies
+# Step 4: Run go mod tidy
 echo -e "${GREEN}Running go mod tidy to clean up dependencies...${NC}"
 go mod tidy
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}Dependencies tidied successfully${NC}"
 else
-    echo -e "${YELLOW}go mod tidy had issues (this is normal if no code changes were needed)${NC}"
-fi
-
-# Step 5: Remove migration files from the database (optional)
-echo ""
-read -p "Do you want to also drop the migration table for this module from the database? (y/N): " -n 1 -r
-echo ""
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-    echo -e "${GREEN}Dropping migration table for module: $MODULE_NAME${NC}"
-    echo "Please run the appropriate migration down command manually."
-    echo "Example: migrate -path internal/$MODULE_NAME/migration -database \"your_database_url\" down"
+    echo -e "${YELLOW}go mod tidy had issues${NC}"
 fi
 
 echo ""
@@ -151,5 +127,4 @@ echo ""
 echo "Next steps (manual):"
 echo "  1. Remove any imports from cmd/api/main.go"
 echo "  2. Remove route registrations from internal/router/router.go"
-echo "  3. Run database migrations down if needed"
-echo "  4. Run 'make build' to verify everything works"
+echo "  3. Run 'make build' to verify everything works"
