@@ -3,22 +3,22 @@ package server
 import (
 	"fmt"
 
-	"github.com/jackc/pgx/v5/pgxpool"
-
-	// wsh "{{ cookiecutter.module_path }}/server/ws"
-
 	"github.com/gin-gonic/gin"
-	"{{ cookiecutter.module_path }}/pkg/token"
-	"{{ cookiecutter.module_path }}/utils"
+	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/socialauth"
+	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users"
+	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/pkg/token"
+	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/utils"
 )
 
-// Server serves HTTP request for {{ cookiecutter.project_slug}} service
+// Server serves HTTP request for {{ cookiecutter.project_name }} service
 type Server struct {
-	config     utils.Config
-	db         *pgxpool.Pool
-	tokenMaker token.Maker
-	router     *gin.Engine
-	Services   *Services
+	config             utils.Config
+	db                 *pgxpool.Pool
+	tokenMaker         token.Maker
+	router             *gin.Engine
+	UserServices       *users.Services
+	SocialAuthServices *socialauth.Services
 }
 
 // NewServer creates a new HTTP server and setup routing
@@ -28,13 +28,16 @@ func NewServer(config utils.Config, dbConn *pgxpool.Pool) (*Server, error) {
 		return nil, fmt.Errorf("cannot create token maker: %w", err)
 	}
 
-	services := NewServices(dbConn)
+	// imported services
+	userServices := users.NewServices(dbConn, tokenMaker, config)
+	socialauthServices := socialauth.NewServices(dbConn, tokenMaker, config)
 
 	s := &Server{
-		config:     config,
-		db:         dbConn,
-		tokenMaker: tokenMaker,
-		Services:   services,
+		config:       config,
+		db:           dbConn,
+		tokenMaker:   tokenMaker,
+		UserServices: userServices,
+		SocialAuthServices: socialauthServices,
 	}
 
 	s.setupRouter(config)
@@ -45,36 +48,4 @@ func NewServer(config utils.Config, dbConn *pgxpool.Pool) (*Server, error) {
 // Start runs the HTTP server on a specification address
 func (server *Server) Start(address string) error {
 	return server.router.Run(address)
-}
-
-// func (ws *Server) WSHandler() *wsh.WSHandler {
-// 	return ws.wsHandler
-// }
-
-func errorResponse(err error) gin.H {
-	// // Split the error message into individual validation errors
-	// lines := strings.Split(err.Error(), "\n")
-
-	// // Prepare a slice of maps to hold individual field errors
-	// var details []map[string]string
-
-	// for _, line := range lines {
-	// 	// Example line: "Key: 'tansferRequest.FromAccountID' Error:Field validation for 'FromAccountID' failed on the 'required' tag"
-	// 	parts := strings.SplitN(line, "Error:", 2)
-	// 	if len(parts) == 2 {
-	// 		fieldPart := strings.TrimSpace(parts[0])
-	// 		errorMsg := strings.TrimSpace(parts[1])
-
-	// 		details = append(details, map[string]string{
-	// 			"key":   fieldPart,
-	// 			"error": errorMsg,
-	// 		})
-	// 	}
-	// }
-
-	// return gin.H{
-	// 	"errors": details,
-	// }
-	return gin.H{"error": err.Error()}
-
 }

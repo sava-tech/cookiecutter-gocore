@@ -8,9 +8,9 @@ import (
 	"sync"
 
 	"github.com/gin-gonic/gin"
+	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/pkg/token"
+	u "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/utils"
 	"golang.org/x/time/rate"
-	"{{ cookiecutter.module_path }}/pkg/token"
-	u "{{ cookiecutter.module_path }}/utils"
 )
 
 const (
@@ -89,6 +89,12 @@ func AuthMiddleWare(tokenMaker token.Maker) gin.HandlerFunc {
 		}
 
 		ctx.Set(AuthorizationPayloadKey, payload)
+		// Set individual fields for easy access in handlers
+		ctx.Set("user_email", payload.Email)
+		ctx.Set("account_type", payload.AccountType)
+		ctx.Set("session_id", payload.ID)      // Session ID from token payload
+		ctx.Set("token_payload", payload)      // Full payload (redundant but convenient)
+
 		ctx.Next()
 
 	}

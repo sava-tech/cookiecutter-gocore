@@ -1,14 +1,20 @@
 -- name: CreateUser :one
 INSERT INTO users (
   email,
-  username,
+  first_name,
+  last_name,
+  full_name,
   phone_number,
   avatar,
   age,
   gender,
-  hashed_password
+  email_verified,
+  account_type,
+  hashed_password,
+  created_at,
+  updated_at
 ) VALUES (
-  $1, $2, $3, $4, $5, $6, $7
+  $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, NOW(), NOW()
 )
 RETURNING *;
 
@@ -24,34 +30,33 @@ FROM users
 WHERE email = $1
 LIMIT 1;
 
--- name: GetUserByUsername :one
+-- name: GetUserByFirstName :one
 SELECT *
 FROM users
-WHERE username = $1
+WHERE first_name = $1
 LIMIT 1;
-
-
--- name: ListUsers :many
-SELECT *
-FROM users
-ORDER BY created_at DESC
-LIMIT $1 OFFSET $2;
 
 
 -- name: UpdateUser :one
 UPDATE users
 SET
   email = COALESCE($2, email),
-  username = COALESCE($3, username),
-  phone_number = COALESCE($4, phone_number),
-  avatar = COALESCE($5, avatar),
-  age = COALESCE($6, age),
-  gender = COALESCE($7, gender),
-  is_active = COALESCE($8, is_active),
+  first_name = COALESCE($3, first_name),
+  last_name = COALESCE($4, last_name),
+  full_name = COALESCE($5, full_name),
+  phone_number = COALESCE($6, phone_number),
+  avatar = COALESCE($7, avatar),
+  age = COALESCE($8, age),
+  gender = COALESCE($9, gender),
+  is_active = COALESCE($10, is_active),
   updated_at = now()
 WHERE id = $1
 RETURNING *;
 
+-- name: VerifyUserEmail :exec
+UPDATE users 
+SET email_verified = true, updated_at = NOW() 
+WHERE email = $1;
 
 -- name: UpdatePassword :exec
 UPDATE users
@@ -61,6 +66,8 @@ SET
   updated_at = now()
 WHERE id = $1;
 
+-- name: GetUserByPhoneNumber :one
+SELECT * FROM users WHERE phone_number = $1 LIMIT 1;
 
 -- name: DeactivateUser :exec
 UPDATE users
@@ -70,6 +77,9 @@ SET
 WHERE id = $1;
 
 
--- name: DeleteUser :exec
-DELETE FROM users
-WHERE id = $1;
+-- name: UpdateUserPassword :exec
+UPDATE users 
+SET hashed_password = $2, updated_at = NOW() 
+WHERE email = $1;
+
+
