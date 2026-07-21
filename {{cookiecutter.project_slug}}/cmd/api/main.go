@@ -1,4 +1,4 @@
-// @title {{ cookiecutter.project_name }} API
+// @title cnn-nigeria API
 // @version 1.0
 // @description This is the API documentation for {{ cookiecutter.project_name }}.
 // @termsOfService http://swagger.io/terms/
