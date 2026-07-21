@@ -6,11 +6,11 @@ import "fmt"
 
 func (m *MailtrapMailer) SendEmailOTP(identifier string, token string) (string, error) {
 	// build payload and send using Mailtrap
-	subject := "[Cnn-Nigeria]-OTP Token"
+	subject := "[{{ cookiecutter.project_name }}]-OTP Token"
 	data := EmailTemplateData{
 		Identifier: identifier,
 		Token:      token,
-		Link:       fmt.Sprintf("https://cnn-Nigeria.co/verify?token=%s", token),
+		Link:       fmt.Sprintf("https://{{ cookiecutter.project_name }}.co/verify?token=%s", token),
 	}
 
 	// Generate HTML content

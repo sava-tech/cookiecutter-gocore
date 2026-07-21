@@ -16,7 +16,7 @@ func (m *MailpitMailer) SendEmailOTP(identifier string, token string) (string, e
 	data := EmailTemplateData{
 		Identifier: identifier,
 		Token:      token,
-		Link:       fmt.Sprintf("https://cnn-Nigeria.co/verify?token=%s", token),
+		Link:       fmt.Sprintf("https://{{ cookiecutter.project_name }}.co/verify?token=%s", token),
 		Year:       2026,
 		AppName:    "CNN Nigeria",
 	}
@@ -44,7 +44,7 @@ func (m *MailpitMailer) SendEmailOTP(identifier string, token string) (string, e
 func (m *MailpitMailer) SendPasswordReset(identifier string) (string, error) {
 	// Implementation for sending password reset via Mailpit
 	// Prepare template data
-	resetLink := fmt.Sprintf("https://cnn-Nigeria.co/reset-password?email=%s", identifier)
+	resetLink := fmt.Sprintf("https://{{ cookiecutter.project_name }}.co/reset-password?email=%s", identifier)
 	data := EmailTemplateData{
 		Identifier: identifier,
 		Link:       resetLink,

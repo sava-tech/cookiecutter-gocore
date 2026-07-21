@@ -1,10 +1,10 @@
 // @title cnn-nigeria API
 // @version 1.0
-// @description This is the API documentation for cnn-nigeria.
+// @description This is the API documentation for {{ cookiecutter.project_name }}.
 // @termsOfService http://swagger.io/terms/
 
 // @contact.name API Support
-// @contact.email support@cnn-nigeria.com
+// @contact.email support@{{ cookiecutter.project_name }}.com
 
 // @license.name MIT
 // @license.url https://opensource.org/licenses/MIT
@@ -29,9 +29,9 @@ import (
 	"log"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-	_ "github.com/{{ cookiecutter.github_username }}/cnn-nigeria/docs"
-	"github.com/{{ cookiecutter.github_username }}/cnn-nigeria/internal/server"
-	"github.com/{{ cookiecutter.github_username }}/cnn-nigeria/utils"
+	_ "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/docs"
+	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/server"
+	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/utils"
 )
 
 var (
