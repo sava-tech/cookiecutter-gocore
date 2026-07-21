@@ -8,11 +8,11 @@ import (
 
 func TestMailpitConnection(t *testing.T) {
 	addr := "127.0.0.1:1025"
-	from := "test@cnn-nigeria.local"
+	from := "test@{{ cookiecutter.project_name }}.local"
 	to := "user@example.com"
 
 	msg := []byte("To: user@example.com\r\n" +
-		"From: test@cnn-nigeria.local\r\n" +
+		"From: test@{{ cookiecutter.project_name }}.local\r\n" +
 		"Subject: Test Email\r\n" +
 		"\r\n" +
 		"Hello from CNN Nigeria!\r\n")
@@ -28,7 +28,7 @@ func TestMailpitConnection(t *testing.T) {
 func TestMailpitIPv4(t *testing.T) {
 	// Test IPv4 address
 	addr := "127.0.0.1:1025"
-	from := "test@cnn-nigeria.local"
+	from := "test@{{ cookiecutter.project_name }}.local"
 	to := "test@example.com"
 
 	msg := fmt.Sprintf("To: %s\r\nFrom: %s\r\nSubject: Test IPv4\r\n\r\nHello!\r\n", to, from)
