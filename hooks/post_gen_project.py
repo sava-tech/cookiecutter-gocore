@@ -13,6 +13,7 @@ def main():
         if os.path.exists('Makefile'):
             try:
                 print("Installing dependencies...")
+                subprocess.run(['make', 'swagger-doc'], check=True)
                 subprocess.run(['make', 'install-dependencies'], check=True)
                 print("Done....")
             except subprocess.CalledProcessError as e:

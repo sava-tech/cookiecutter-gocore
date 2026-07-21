@@ -1,0 +1,15 @@
+TODO: 
+    social auth - google 
+    - modify user email to be true if social is present 
+    logout endpoint 
+    use go routen on sending email
+    phone number verification
+    phone number password reset
+    update cookiecutter gocore
+    blue green development ( digitialocean, aws  )
+    
+    
+
+mockgen -package mock_db -destination internal/users/mock/token.go github.com/michaelassa01/blog/pkg/token Maker
+mockgen -package mock_db -destination internal/users/mock/password.go github.com/michaelassa01/blog/internal/users/domain PasswordService
+mockgen -package mock_db -destination internal/users/mock/mailer.go github.com/michaelassa01/blog/pkg/emailer Mailer
