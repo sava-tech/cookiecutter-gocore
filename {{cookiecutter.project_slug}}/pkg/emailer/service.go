@@ -1,7 +1,7 @@
 package emailer
 
 import (
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/utils"
+	"{{ cookiecutter.module_path }}/utils"
 )
 
 func SendEmailOTP(identifier string, token string, cfg utils.Config) (string, error) {

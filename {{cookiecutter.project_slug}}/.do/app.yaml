@@ -1,0 +1,32 @@
+name: {{ cookiecutter.project_slug }}
+region: nyc
+
+services:
+  - name: api
+    dockerfile_path: Dockerfile
+    source_dir: /
+    http_port: 8080
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    health_check:
+      http_path: /health
+      initial_delay_seconds: 10
+      period_seconds: 10
+    envs:
+      - key: SERVER_ADDRESS
+        value: "0.0.0.0:8080"
+      - key: PRODUCTION
+        value: "true"
+      - key: DB_SOURCE
+        value: ${db.DATABASE_URL}
+        type: SECRET
+      - key: TOKEN_SYMMETRIC_KEY
+        type: SECRET
+      - key: SESSION_SECRET
+        type: SECRET
+
+databases:
+  - name: db
+    engine: PG
+    version: "{{ cookiecutter.postgresql_version }}"
+    production: false

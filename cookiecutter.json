@@ -7,20 +7,18 @@
   "domain_name": "example.com",
   "email": "{{ cookiecutter.author_name.lower() | trim() |replace(' ', '-') }}@{{ cookiecutter.domain_name.lower() | trim() }}",
   "postgresql_version": ["18", "17", "16", "15", "14"],
-  "cloud_provider": ["AWS", "Railway", "Azure", "Digitalocean", "None"],
   "module_path": "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}",
-  "editor": ["None", "PyCharm", "VS Code"],
-  "windows": "n",
+  "hosting_provider": ["AWS", "DigitalOcean", "Railway"],
   "use_docker": "n",
   "auto_install_deps": "n",
-  "mail_service": [
+  "email_service": [
+    "None",
+    "Google",
     "Mailgun",
+    "Zoho",
+    "SendGrid",
     "Amazon SES",
-    "Mailtrap",
-    "Postmark",
-    "Sendgrid",
-    "Other SMTP"
+    "Postmark"
   ],
-  "use_mailpit": "n",
-  "ci_tool": ["None", "Travis", "Gitlab", "Github", "Drone"]
+  "use_mailpit": "n"
 }

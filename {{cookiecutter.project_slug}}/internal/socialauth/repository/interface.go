@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/socialauth/domain"
+	"{{ cookiecutter.module_path }}/internal/socialauth/domain"
 )
 
 type SocialAuthRepository interface {

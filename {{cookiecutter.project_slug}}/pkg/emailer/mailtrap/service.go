@@ -8,7 +8,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/utils"
+	"{{ cookiecutter.module_path }}/utils"
 )
 
 // Sender handles sending email using mailtrap

@@ -5,15 +5,15 @@ import (
 	"log"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/socialauth/application"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/socialauth/infrastructure"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/socialauth/repository"
-	userApplication "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users/application"
-	userRepository "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users/repository"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/pkg/emailer"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/pkg/password"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/pkg/token"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/utils"
+	"{{ cookiecutter.module_path }}/internal/socialauth/application"
+	"{{ cookiecutter.module_path }}/internal/socialauth/infrastructure"
+	"{{ cookiecutter.module_path }}/internal/socialauth/repository"
+	userApplication "{{ cookiecutter.module_path }}/internal/users/application"
+	userRepository "{{ cookiecutter.module_path }}/internal/users/repository"
+	"{{ cookiecutter.module_path }}/pkg/emailer"
+	"{{ cookiecutter.module_path }}/pkg/password"
+	"{{ cookiecutter.module_path }}/pkg/token"
+	"{{ cookiecutter.module_path }}/utils"
 )
 
 type Services struct {

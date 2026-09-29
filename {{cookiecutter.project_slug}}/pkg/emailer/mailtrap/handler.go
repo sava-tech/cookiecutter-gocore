@@ -1,6 +1,10 @@
 package mailtrap
 
-import "fmt"
+import (
+	"fmt"
+
+	"{{ cookiecutter.module_path }}/pkg/emailer/templates"
+)
 
 
 
@@ -14,7 +18,7 @@ func (m *MailtrapMailer) SendEmailOTP(identifier string, token string) (string, 
 	}
 
 	// Generate HTML content
-	html, err := GenerateHTML("./pkg/emailer/templates/otp.html", data)
+	html, err := templates.GenerateHTML("./pkg/emailer/templates/otp.html", data)
 	if err != nil {
 		return "", err
 	}

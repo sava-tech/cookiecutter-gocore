@@ -7,9 +7,9 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users/domain"
-	models "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users/models"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/utils"
+	"{{ cookiecutter.module_path }}/internal/users/domain"
+	models "{{ cookiecutter.module_path }}/internal/users/models"
+	"{{ cookiecutter.module_path }}/utils"
 )
 
 type SessionRepo struct {

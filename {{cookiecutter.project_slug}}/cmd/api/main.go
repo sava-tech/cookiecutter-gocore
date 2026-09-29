@@ -1,4 +1,4 @@
-// @title cnn-nigeria API
+// @title {{ cookiecutter.project_name }} API
 // @version 1.0
 // @description This is the API documentation for {{ cookiecutter.project_name }}.
 // @termsOfService http://swagger.io/terms/
@@ -29,9 +29,9 @@ import (
 	"log"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-	_ "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/docs"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/server"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/utils"
+	_ "{{ cookiecutter.module_path }}/docs"
+	"{{ cookiecutter.module_path }}/internal/server"
+	"{{ cookiecutter.module_path }}/utils"
 )
 
 var (

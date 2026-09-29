@@ -19,6 +19,8 @@
 - [Running Migrations](#running-migrations)
 - [Swagger Documentation](#swagger-documentation)
 - [Testing](#testing)
+- [Email](#email)
+- [Deployment](#deployment)
 - [License](#license)
 
 ---
@@ -174,6 +176,50 @@ make test
 Run integration tests:
 
 make itest
+
+## Email
+
+{% if cookiecutter.email_service == "None" -%}
+No production email provider was selected — email sending falls back to **Mailpit**, a local SMTP catcher for
+development only (view caught mail at `http://localhost:8025`). To send real email, set `EMAIL_PROVIDER=smtp` in
+`.env` and fill in `SMTP_HOST`/`SMTP_PORT`/`SMTP_USERNAME`/`SMTP_PASSWORD` for your provider —
+`pkg/emailer/smtp` works with Google, Mailgun, Zoho, SendGrid, Amazon SES and Postmark unchanged.
+{%- else -%}
+This project sends email through **{{ cookiecutter.email_service }}** over SMTP (`pkg/emailer/smtp`).
+`generate_env_file` in the post-gen hook already pre-filled `SMTP_HOST`/`SMTP_PORT` for
+{{ cookiecutter.email_service }} in `.env` — open it and fill in `SMTP_USERNAME`/`SMTP_PASSWORD` (see the comments
+above each field for what {{ cookiecutter.email_service }} expects there).
+
+Locally, `USE_MAILPIT=true` and an empty `EMAIL_PROVIDER` still route through Mailpit so you don't burn real sends
+while developing. Set `EMAIL_PROVIDER=smtp` when you're ready to send through {{ cookiecutter.email_service }}.
+{%- endif %}
+
+## Deployment
+
+This project is set up to deploy to **{{ cookiecutter.hosting_provider }}**.
+
+{% if cookiecutter.hosting_provider == "Railway" -%}
+Railway builds straight from the `Dockerfile` using `railway.toml`. Provision a PostgreSQL plugin in your Railway
+project, then set `DB_SOURCE` and the other variables from `env.example` in the Railway dashboard (or
+`railway variables set`), and deploy:
+
+```bash
+railway up
+```
+{%- elif cookiecutter.hosting_provider == "DigitalOcean" -%}
+`.do/app.yaml` defines a DigitalOcean App Platform spec (API service + managed Postgres). Create the app with:
+
+```bash
+doctl apps create --spec .do/app.yaml
+```
+
+Set the `TOKEN_SYMMETRIC_KEY`/`SESSION_SECRET` secrets in the App Platform dashboard after creation — they're
+declared as `SECRET` type and not stored in the spec file.
+{%- elif cookiecutter.hosting_provider == "AWS" -%}
+`deploy/aws/apprunner-service.json` deploys the Dockerfile to AWS App Runner via ECR. See
+[`deploy/aws/README.md`](deploy/aws/README.md) for the full push-image-then-create-service walkthrough, including
+where to provision Postgres (RDS) and store secrets (Secrets Manager).
+{%- endif %}
 
 License
 

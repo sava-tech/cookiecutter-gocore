@@ -27,8 +27,10 @@ type Config struct {
 	Provider                 string        `mapstructure:"EMAIL_PROVIDER"`
 	MailtrapURL              string        `mapstructure:"MAILTRAP_URL"`
 	MailtrapAuthToken        string        `mapstructure:"MAILTRAP_AUTH_TOKEN"`
-	SendGridURL              string        `mapstructure:"SENDGRID_URL"`
-	SendGridAuthToken        string        `mapstructure:"SENDGRID_AUTH_TOKEN"`
+	SmtpHost                 string        `mapstructure:"SMTP_HOST"`
+	SmtpPort                 string        `mapstructure:"SMTP_PORT"`
+	SmtpUsername             string        `mapstructure:"SMTP_USERNAME"`
+	SmtpPassword             string        `mapstructure:"SMTP_PASSWORD"`
 	DefaultFromEmail         string        `mapstructure:"DEFAULT_FROM_EMAIL"`
 	EmailSubjectPrefit       string        `mapstructure:"EMAIL_SUBJECT_PREFIX"`
 	TermiiApiKey             string        `mapstructure:"TERMII_API_KEY"`
@@ -61,6 +63,17 @@ type Config struct {
 	SocialCallbackURL string `mapstructure:"SOCIAL_CALLBACK_URL"`
 	// Session secret for Goth
 	SessionSecret string `mapstructure:"SESSION_SECRET"`
+
+	// TrustedProxies: comma-separated IPs/CIDRs of the reverse proxies /
+	// load balancers in front of the API. X-Forwarded-For is only honoured
+	// from these; leave empty when clients connect directly.
+	TrustedProxies string `mapstructure:"TRUSTED_PROXIES"`
+
+	// Rate limiting (per client IP). Zero values fall back to defaults.
+	RateLimitRPS           float64 `mapstructure:"RATE_LIMIT_RPS"`
+	RateLimitBurst         int     `mapstructure:"RATE_LIMIT_BURST"`
+	AuthRateLimitPerMinute float64 `mapstructure:"AUTH_RATE_LIMIT_PER_MINUTE"`
+	AuthRateLimitBurst     int     `mapstructure:"AUTH_RATE_LIMIT_BURST"`
 }
 
 // LoadConfig reads configuration from file or environment variables
@@ -100,6 +113,15 @@ func LoadConfig(path string) (config Config, err error) {
 	viper.BindEnv("APPLE_PRIVATE_KEY")
 	viper.BindEnv("SOCIAL_CALLBACK_URL")
 	viper.BindEnv("SESSION_SECRET")
+
+	// ======================
+	// Network / Rate limiting
+	// ======================
+	viper.BindEnv("TRUSTED_PROXIES")
+	viper.BindEnv("RATE_LIMIT_RPS")
+	viper.BindEnv("RATE_LIMIT_BURST")
+	viper.BindEnv("AUTH_RATE_LIMIT_PER_MINUTE")
+	viper.BindEnv("AUTH_RATE_LIMIT_BURST")
 
 	// ======================
 	// Redis

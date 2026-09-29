@@ -2,9 +2,9 @@ package users
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users/handlers"
-	// "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/auth/interfaces/http"
-	// "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/pkg/middleware"
+	"{{ cookiecutter.module_path }}/internal/users/handlers"
+	// "{{ cookiecutter.module_path }}/internal/auth/interfaces/http"
+	// "{{ cookiecutter.module_path }}/pkg/middleware"
 )
 
 // RegisterRoutes registers all auth routes with the gin engine
@@ -13,18 +13,21 @@ func RegisterRoutes(
 	user *handlers.UserHandler,
 	auth *handlers.AuthHandler,
 	verification *handlers.VerificationHandler,
+	authRateLimit gin.HandlerFunc,
 ) {
 
-	// Public routes (no authentication required)
+	// Public routes (no authentication required). Everything except
+	// refresh-token gets the strict authRateLimit, since these are the
+	// brute-force / email-spam targets.
 	authGroup := router.Group("/auth")
 	{
-		authGroup.POST("/register", auth.Register)
-		authGroup.POST("/login", auth.Login)
-		authGroup.POST("/otp-email-login", auth.OtpEmailLogin)
-		authGroup.POST("/verify-otp-email-login", auth.VerifyOtpEmailLogin)
-		authGroup.POST("/verify-email", verification.VerifyEmail)
-		authGroup.POST("/forgot-password", auth.ForgotPassword)
-		authGroup.POST("/reset-password", auth.ResetPassword)
+		authGroup.POST("/register", authRateLimit, auth.Register)
+		authGroup.POST("/login", authRateLimit, auth.Login)
+		authGroup.POST("/otp-email-login", authRateLimit, auth.OtpEmailLogin)
+		authGroup.POST("/verify-otp-email-login", authRateLimit, auth.VerifyOtpEmailLogin)
+		authGroup.POST("/verify-email", authRateLimit, verification.VerifyEmail)
+		authGroup.POST("/forgot-password", authRateLimit, auth.ForgotPassword)
+		authGroup.POST("/reset-password", authRateLimit, auth.ResetPassword)
 		authGroup.POST("/refresh-token", auth.RefreshToken)
 	}
 

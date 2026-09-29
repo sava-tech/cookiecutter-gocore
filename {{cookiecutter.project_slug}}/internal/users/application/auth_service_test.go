@@ -7,11 +7,11 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/shared/helpers"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users/domain"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users/dto"
-	mock_db "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users/mock"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/pkg/token"
+	"{{ cookiecutter.module_path }}/internal/shared/helpers"
+	"{{ cookiecutter.module_path }}/internal/users/domain"
+	"{{ cookiecutter.module_path }}/internal/users/dto"
+	mock_db "{{ cookiecutter.module_path }}/internal/users/mock"
+	"{{ cookiecutter.module_path }}/pkg/token"
 
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
