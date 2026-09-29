@@ -23,7 +23,7 @@ BASE_DIR="internal/$MODULE_NAME"
 if [ -d "$BASE_DIR" ]; then
     echo -e "${RED}ERROR: Module '$MODULE_NAME' already exists at $BASE_DIR${NC}"
     echo "Choose a different module name or delete the existing module first"
-    echo "To delete the existing module: ./scripts/delete_module.sh $MODULE_NAME"
+    echo "To delete the existing module: make delete-module name=$MODULE_NAME"
     exit 1
 fi
 

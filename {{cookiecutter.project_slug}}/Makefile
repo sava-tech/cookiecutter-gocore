@@ -10,7 +10,7 @@ help:
 		awk 'BEGIN {FS = ":.*?## "}; {printf "  %-20s %s\n", $$1, $$2}'
 	@echo
 	@echo "Usage: make <target> [VARIABLE=value]"
-	@echo "Example: make module name=users"
+	@echo "Example: make create-module name=posts"
 
 
 # Build the application
@@ -125,7 +125,7 @@ delete-module: ## Delete a module and its SQLC config. Usage: make delete-module
 		echo "Please provide a module name. Example: make delete-module name=users"; \
 		exit 1; \
 	fi
-	@python3 scripts/delete_module.py "$(name)"
+	@bash scripts/delete_sqlc_module.sh "$(name)"
 
 
 # to tidy the code base by installing dependencies

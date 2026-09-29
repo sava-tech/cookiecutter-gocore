@@ -263,6 +263,12 @@ This scaffolds `internal/posts/` with the DDD folders, creates its first migrati
 4. Implement the repository, service and handlers.
 5. Register the module's routes in `internal/server/router.go`.
 
+To remove a module, run the command below. It deletes `internal/posts/` and its `sqlc.yaml` entry, then lists any files that still import it. Add `FORCE=1` to skip the confirmation prompt.
+
+```bash
+make delete-module name=posts
+```
+
 ---
 
 ## Migrations
@@ -325,6 +331,7 @@ Run `make help` for the full list.
 | `make test` / `make itest` | Run all / integration tests |
 | `make docker-run` / `make docker-down` | Start / stop the Docker stack |
 | `make create-module name=<name>` | Scaffold a new module |
+| `make delete-module name=<name>` | Delete a module and its SQLC config |
 | `make migration module=<m> name=<n>` | Create a migration |
 | `make sqlc` | Generate SQLC code |
 | `make swagger-doc` | Generate Swagger docs |
