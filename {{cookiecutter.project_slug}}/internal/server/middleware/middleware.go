@@ -5,12 +5,10 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
-	"sync"
 
 	"github.com/gin-gonic/gin"
 	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/pkg/token"
 	u "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/utils"
-	"golang.org/x/time/rate"
 )
 
 const (
@@ -18,46 +16,6 @@ const (
 	authorizationTypeBearer = "bearer"
 	AuthorizationPayloadKey = "authorization_payload"
 )
-
-// Each user/device gets its own limiter
-var limiters = make(map[string]*rate.Limiter)
-var mu sync.Mutex
-
-// NewLimiter creates a limiter for each key (e.g. IP, DeviceID)
-func NewLimiter(rps float64, burst int) *rate.Limiter {
-	return rate.NewLimiter(rate.Limit(rps), burst)
-}
-
-func getLimiter(key string) *rate.Limiter {
-	mu.Lock()
-	defer mu.Unlock()
-
-	limiter, exists := limiters[key]
-	if !exists {
-		// Example: 5 requests per second, burst up to 10
-		limiter = NewLimiter(5, 10)
-		limiters[key] = limiter
-	}
-	return limiter
-}
-
-// RateLimitMiddleware applies per-user or per-IP rate limiting
-func RateLimitMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		// You can also use c.ClientIP() or a user token instead of IP
-		clientID := c.ClientIP()
-
-		limiter := getLimiter(clientID)
-		if !limiter.Allow() {
-			c.AbortWithStatusJSON(http.StatusTooManyRequests, gin.H{
-				"error": "Too many requests, slow down.",
-			})
-			return
-		}
-
-		c.Next()
-	}
-}
 
 func AuthMiddleWare(tokenMaker token.Maker) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
