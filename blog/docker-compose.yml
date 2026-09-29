@@ -1,0 +1,89 @@
+services:
+  postgres:
+    image: postgres:17-alpine3.22
+    container_name: blog_postgres
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=blog_db
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: blog_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+
+  mailpit:
+    # for local development, use the latest image from Docker Hub
+    image: axllent/mailpit:latest
+    container_name: blog_mailpit
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:1025:1025"  # SMTP - host:container
+      - "127.0.0.1:8025:8025"  # Web UI
+    volumes:
+      - ./pkg/emailer/mailpit/data:/data
+    environment:
+      TZ: Africa/Lagos
+      MP_MAX_MESSAGES: 5000
+      MP_DATABASE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+      MP_SMTP_IP: 0.0.0.0  # Listen on all interfaces inside container
+    networks:
+      - app-network
+
+  api:
+    container_name: blog_api
+    # platform: linux/arm64
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: postgres://root:secret@postgres:5432/blog_db?sslmode=disable
+      REDIS_ADDRESS: redis:6379
+      MAILPIT_HOST: mailpit  # This should be the service name
+      MAILPIT_PORT: 1025
+    env_file:
+      - ./.env
+    depends_on:
+      - postgres
+      - redis
+      - mailpit
+    networks:
+      - app-network
+
+    entrypoint:
+      [
+        "/app/wait-for.sh",
+        "postgres:5432",
+        "--",
+        "/app/wait-for.sh",
+        "redis:6379",
+        "--",
+        "/app/wait-for.sh",
+        "mailpit:1025",
+        "--",
+        "/app/start.sh",
+      ]
+    command: ["/app/main"]
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  app-network:
+    driver: bridge

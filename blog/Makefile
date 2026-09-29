@@ -1,6 +1,6 @@
 # Simple Makefile for a Go project
 SHELL := /bin/bash
-PROJECTNAME := "{{ cookiecutter.project_name }}"
+PROJECTNAME := "blog"
 
 help:
 	@echo "Available make commands:"
@@ -10,7 +10,7 @@ help:
 		awk 'BEGIN {FS = ":.*?## "}; {printf "  %-20s %s\n", $$1, $$2}'
 	@echo
 	@echo "Usage: make <target> [VARIABLE=value]"
-	@echo "Example: make create-module name=posts"
+	@echo "Example: make module name=users"
 
 
 # Build the application
@@ -125,7 +125,7 @@ delete-module: ## Delete a module and its SQLC config. Usage: make delete-module
 		echo "Please provide a module name. Example: make delete-module name=users"; \
 		exit 1; \
 	fi
-	@bash scripts/delete_sqlc_module.sh "$(name)"
+	@python3 scripts/delete_module.py "$(name)"
 
 
 # to tidy the code base by installing dependencies
@@ -175,6 +175,6 @@ swagger-doc:
 	@echo "Swagger documentation generated at ./docs"
 
 mock:
-	mockgen -package mock_db -destination internal/users/mock/users.go {{ cookiecutter.module_path }}/internal/users/domain Repository
+	mockgen -package mock_db -destination internal/users/mock/users.go github.com/michaelassa01/blog/internal/users/domain Repository
 
 .PHONY: all build run test clean watch docker-run docker-down itest install-dependencies test tidy swagger-doc createmigration module sqlc migration db_docs db_schema mock

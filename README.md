@@ -42,7 +42,7 @@ If you care about **clean code, scalability, and maintainability**, GoCore is fo
 - Swagger / OpenAPI documentation
 - Cookiecutter template for fast project generation
 - Environment-based configuration
-- Middleware-ready (auth, logging, rate limiting)
+- Auth middleware and per-IP rate limiting (stricter on login/OTP/password routes, spoof-safe behind proxies)
 
 ---
 
@@ -192,35 +192,50 @@ Choose from 1, 2, 3, 4, 5, 6, 7 [1]: 3
 use_mailpit [n]: y
 ```
 
-Enter the project and take a look around:
+### After generating
+
+The generated project's own `README.md` walks through every step in detail. The short version:
+
+**1. Enter the project**
 ```bash
 cd gomacbot/
-ls
 ```
 
-Install Dependencies
+**2. Create your `.env`.** Set `TOKEN_SYMMETRIC_KEY` (exactly 32 characters) and `SESSION_SECRET`:
+```bash
+cp env.example .env
+```
+
+**3. Install dependencies and CLI tools** (`migrate`, `sqlc`, `swag`, ...):
 ```bash
 make install-dependencies
-go mod tidy
 ```
 
-Run Postgres with Docker (Optional)
+**4. Generate Swagger docs.** Required once before the first build, because `main.go` imports the generated `docs` package:
+```bash
+make swagger-doc
+```
+
+**5. Run it.** Either run the whole stack in Docker (Postgres, Redis, Mailpit and the API, with migrations applied automatically):
 ```bash
 make docker-run
 ```
-
-Run the API
+Or run the API locally. Load `.env` into your shell first, because config is read from environment variables only:
 ```bash
-make run
+set -a && source .env && set +a
+make run        # or: make watch  (live reload)
 ```
-Or for live reload
+
+**6. Check it's up**
+```bash
+curl http://localhost:8080/public/health
 ```
-make watch
-```
+
+**Rate limiting** works out of the box: 5 req/s per IP globally, and 5 req/min per IP on each auth endpoint. Tune it with `RATE_LIMIT_*` / `AUTH_RATE_LIMIT_*`. If you deploy behind a load balancer, set `TRUSTED_PROXIES` to its IP/CIDR.
 
 Create a module:
 ```bash
-make module name=users
+make create-module name=posts
 ```
 
 Create a migration:
@@ -259,7 +274,7 @@ Run ```make help ``` to see all commands. Examples:
 - ` make tidy  `                 # Go module tidy
 - ` make docker-run `            # Start Docker containers
 - ` make docker-down   `         # Stop Docker containers
-- ` make module name=users  `    # Create a new module
+- ` make create-module name=posts ` # Create a new module
 - ` make migration module=users name=add_profile_table ` # Create a migration
 - ` make sqlc  `                 # Generate SQLC code
 - ` make swagger-doc  `          # Generate Swagger docs
