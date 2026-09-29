@@ -2,10 +2,10 @@ package handlers
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users/application"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users/domain"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users/dto"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/pkg/response"
+	"{{ cookiecutter.module_path }}/internal/users/application"
+	"{{ cookiecutter.module_path }}/internal/users/domain"
+	"{{ cookiecutter.module_path }}/internal/users/dto"
+	"{{ cookiecutter.module_path }}/pkg/response"
 )
 
 // VerificationHandler binds Gin routes to the service.

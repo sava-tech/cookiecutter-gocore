@@ -2,9 +2,9 @@ package users
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users/handlers"
-	// "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/auth/interfaces/http"
-	// "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/pkg/middleware"
+	"{{ cookiecutter.module_path }}/internal/users/handlers"
+	// "{{ cookiecutter.module_path }}/internal/auth/interfaces/http"
+	// "{{ cookiecutter.module_path }}/pkg/middleware"
 )
 
 // RegisterRoutes registers all auth routes with the gin engine

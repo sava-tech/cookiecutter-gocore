@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/pkg/token"
-	u "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/utils"
+	"{{ cookiecutter.module_path }}/pkg/token"
+	u "{{ cookiecutter.module_path }}/utils"
 )
 
 const (

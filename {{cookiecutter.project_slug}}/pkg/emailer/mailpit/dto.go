@@ -1,6 +1,6 @@
 package mailpit
 
-import "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/utils"
+import "{{ cookiecutter.module_path }}/utils"
 
 
 type MailpitMailer struct {

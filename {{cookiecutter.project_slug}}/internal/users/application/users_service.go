@@ -5,10 +5,10 @@ import (
 	"time"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users/domain"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users/dto"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/pkg/emailer"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/pkg/token"
+	"{{ cookiecutter.module_path }}/internal/users/domain"
+	"{{ cookiecutter.module_path }}/internal/users/dto"
+	"{{ cookiecutter.module_path }}/pkg/emailer"
+	"{{ cookiecutter.module_path }}/pkg/token"
 )
 
 type UserService struct {

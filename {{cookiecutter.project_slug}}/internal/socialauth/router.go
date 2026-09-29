@@ -2,9 +2,9 @@ package socialauth
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/socialauth/domain"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/socialauth/handlers"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/pkg/response"
+	"{{ cookiecutter.module_path }}/internal/socialauth/domain"
+	"{{ cookiecutter.module_path }}/internal/socialauth/handlers"
+	"{{ cookiecutter.module_path }}/pkg/response"
 )
 
 func RegisterRoutes(

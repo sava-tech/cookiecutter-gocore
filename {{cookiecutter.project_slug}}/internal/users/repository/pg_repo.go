@@ -2,7 +2,7 @@ package repository
 
 import (
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users/domain"
+	"{{ cookiecutter.module_path }}/internal/users/domain"
 )
 
 type PgRepo struct {

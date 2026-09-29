@@ -175,6 +175,6 @@ swagger-doc:
 	@echo "Swagger documentation generated at ./docs"
 
 mock:
-	mockgen -package mock_db -destination internal/users/mock/users.go github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users/domain Repository
+	mockgen -package mock_db -destination internal/users/mock/users.go {{ cookiecutter.module_path }}/internal/users/domain Repository
 
 .PHONY: all build run test clean watch docker-run docker-down itest install-dependencies test tidy swagger-doc createmigration module sqlc migration db_docs db_schema mock

@@ -1,4 +1,4 @@
-package mailpit
+package templates
 
 import (
 	"bytes"
@@ -8,9 +8,8 @@ import (
 )
 
 // GenerateHTML loads an HTML file and injects the given data into it.
-// Can be reused for any HTML email or webpage.
+// Shared by every emailer provider (mailpit, mailtrap, smtp, ...).
 func GenerateHTML(templatePath string, data interface{}) (string, error) {
-	// Ensure template exists
 	absPath, err := filepath.Abs(templatePath)
 	if err != nil {
 		return "", err

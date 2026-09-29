@@ -6,8 +6,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/markbates/goth/gothic"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/socialauth/application"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/pkg/response"
+	"{{ cookiecutter.module_path }}/internal/socialauth/application"
+	"{{ cookiecutter.module_path }}/pkg/response"
 )
 
 type SocialAuthHandler struct {

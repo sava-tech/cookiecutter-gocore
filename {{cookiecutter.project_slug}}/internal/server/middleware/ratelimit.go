@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/pkg/response"
+	"{{ cookiecutter.module_path }}/pkg/response"
 	"golang.org/x/time/rate"
 )
 

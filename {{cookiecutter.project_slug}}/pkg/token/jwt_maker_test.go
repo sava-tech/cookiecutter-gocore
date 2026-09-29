@@ -6,7 +6,7 @@ import (
 
 	"github.com/golang-jwt/jwt"
 	"github.com/stretchr/testify/require"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/utils"
+	"{{ cookiecutter.module_path }}/utils"
 )
 
 func TestJWTMaker(t *testing.T) {

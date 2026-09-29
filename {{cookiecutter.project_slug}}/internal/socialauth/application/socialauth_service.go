@@ -8,12 +8,12 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/markbates/goth"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/socialauth/domain"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/socialauth/dto"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/socialauth/repository"
-	userdomain "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users/domain"
+	"{{ cookiecutter.module_path }}/internal/socialauth/domain"
+	"{{ cookiecutter.module_path }}/internal/socialauth/dto"
+	"{{ cookiecutter.module_path }}/internal/socialauth/repository"
+	userdomain "{{ cookiecutter.module_path }}/internal/users/domain"
 
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/pkg/token"
+	"{{ cookiecutter.module_path }}/pkg/token"
 )
 
 type SocialAuthService struct {

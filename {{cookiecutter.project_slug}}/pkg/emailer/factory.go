@@ -1,19 +1,28 @@
 package emailer
 
 import (
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/pkg/emailer/mailpit"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/pkg/emailer/mailtrap"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/utils"
+	"{{ cookiecutter.module_path }}/pkg/emailer/mailpit"
+	"{{ cookiecutter.module_path }}/pkg/emailer/mailtrap"
+	"{{ cookiecutter.module_path }}/pkg/emailer/smtp"
+	"{{ cookiecutter.module_path }}/utils"
 )
 
-type Config struct {
-	Provider          string
-	MailtrapAuthToken string
-	SendGridAuthToken string
-}
-
+// NewMailer picks a Mailer based on EMAIL_PROVIDER:
+//   - "smtp"     -> generic SMTP relay (Google, Mailgun, Zoho, SendGrid, Amazon SES, Postmark — see env.example)
+//   - "mailtrap" -> Mailtrap's HTTP send API
+//   - anything else -> Mailpit, the local dev mail catcher
 func NewMailer(cfg utils.Config) (Mailer, error) {
 	switch cfg.Provider {
+	case "smtp":
+		return &smtp.SMTPMailer{
+			Config:   cfg,
+			From:     cfg.DefaultFromEmail,
+			Host:     cfg.SmtpHost,
+			Port:     cfg.SmtpPort,
+			Username: cfg.SmtpUsername,
+			Password: cfg.SmtpPassword,
+		}, nil
+
 	case "mailtrap":
 		return &mailtrap.MailtrapMailer{ApiKey: cfg.MailtrapAuthToken, Config: cfg}, nil
 

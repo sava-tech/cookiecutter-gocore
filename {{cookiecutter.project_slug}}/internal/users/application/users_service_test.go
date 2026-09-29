@@ -8,9 +8,9 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users/domain"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users/dto"
-	mock_db "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users/mock"
+	"{{ cookiecutter.module_path }}/internal/users/domain"
+	"{{ cookiecutter.module_path }}/internal/users/dto"
+	mock_db "{{ cookiecutter.module_path }}/internal/users/mock"
 	"go.uber.org/mock/gomock"
 )
 

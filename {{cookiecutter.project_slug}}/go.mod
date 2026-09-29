@@ -1,4 +1,4 @@
-module github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}
+module {{ cookiecutter.module_path }}
 
 go 1.25.4
 

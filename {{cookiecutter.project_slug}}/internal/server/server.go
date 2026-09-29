@@ -5,10 +5,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/socialauth"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/pkg/token"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/utils"
+	"{{ cookiecutter.module_path }}/internal/socialauth"
+	"{{ cookiecutter.module_path }}/internal/users"
+	"{{ cookiecutter.module_path }}/pkg/token"
+	"{{ cookiecutter.module_path }}/utils"
 )
 
 // Server serves HTTP request for {{ cookiecutter.project_name }} service

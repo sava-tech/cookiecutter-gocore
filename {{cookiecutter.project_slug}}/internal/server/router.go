@@ -12,13 +12,13 @@ import (
 	"golang.org/x/time/rate"
 
 	// import modules router
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/server/middleware"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/socialauth"
-	socialauthHandler "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/socialauth/handlers"
-	socialauthInfra "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/socialauth/infrastructure"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/internal/users/handlers"
-	"github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/utils"
+	"{{ cookiecutter.module_path }}/internal/server/middleware"
+	"{{ cookiecutter.module_path }}/internal/socialauth"
+	socialauthHandler "{{ cookiecutter.module_path }}/internal/socialauth/handlers"
+	socialauthInfra "{{ cookiecutter.module_path }}/internal/socialauth/infrastructure"
+	"{{ cookiecutter.module_path }}/internal/users"
+	"{{ cookiecutter.module_path }}/internal/users/handlers"
+	"{{ cookiecutter.module_path }}/utils"
 )
 
 func (s *Server) setupRouter(config utils.Config) {

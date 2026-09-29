@@ -1,0 +1,37 @@
+{
+  "ServiceName": "{{ cookiecutter.project_slug }}",
+  "SourceConfiguration": {
+    "ImageRepository": {
+      "ImageIdentifier": "<ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/{{ cookiecutter.project_slug }}:latest",
+      "ImageRepositoryType": "ECR",
+      "ImageConfiguration": {
+        "Port": "8080",
+        "RuntimeEnvironmentVariables": {
+          "SERVER_ADDRESS": "0.0.0.0:8080",
+          "PRODUCTION": "true"
+        },
+        "RuntimeEnvironmentSecrets": {
+          "DB_SOURCE": "<SECRETS_MANAGER_ARN:DB_SOURCE>",
+          "TOKEN_SYMMETRIC_KEY": "<SECRETS_MANAGER_ARN:TOKEN_SYMMETRIC_KEY>",
+          "SESSION_SECRET": "<SECRETS_MANAGER_ARN:SESSION_SECRET>"
+        }
+      }
+    },
+    "AutoDeploymentsEnabled": true,
+    "AuthenticationConfiguration": {
+      "AccessRoleArn": "<ECR_ACCESS_ROLE_ARN>"
+    }
+  },
+  "HealthCheckConfiguration": {
+    "Protocol": "HTTP",
+    "Path": "/health",
+    "Interval": 10,
+    "Timeout": 5,
+    "HealthyThreshold": 1,
+    "UnhealthyThreshold": 5
+  },
+  "InstanceConfiguration": {
+    "Cpu": "1024",
+    "Memory": "2048"
+  }
+}

@@ -27,8 +27,10 @@ type Config struct {
 	Provider                 string        `mapstructure:"EMAIL_PROVIDER"`
 	MailtrapURL              string        `mapstructure:"MAILTRAP_URL"`
 	MailtrapAuthToken        string        `mapstructure:"MAILTRAP_AUTH_TOKEN"`
-	SendGridURL              string        `mapstructure:"SENDGRID_URL"`
-	SendGridAuthToken        string        `mapstructure:"SENDGRID_AUTH_TOKEN"`
+	SmtpHost                 string        `mapstructure:"SMTP_HOST"`
+	SmtpPort                 string        `mapstructure:"SMTP_PORT"`
+	SmtpUsername             string        `mapstructure:"SMTP_USERNAME"`
+	SmtpPassword             string        `mapstructure:"SMTP_PASSWORD"`
 	DefaultFromEmail         string        `mapstructure:"DEFAULT_FROM_EMAIL"`
 	EmailSubjectPrefit       string        `mapstructure:"EMAIL_SUBJECT_PREFIX"`
 	TermiiApiKey             string        `mapstructure:"TERMII_API_KEY"`

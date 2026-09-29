@@ -163,44 +163,33 @@ project_slug [gomacbot]: gomacbot
 description [Behold My Awesome Goland Project!]: Behold My Awesome Goland Project!
 author_name [Michael Assanama]: Michael Assanama
 github_username [michaelassa01]: michaelassa01
+domain_name [example.com]: example.com
+email [michael-assanama@example.com]: michael-assanama@example.com
 module_path [github.com/michaelassa01/gomacbot]: github.com/michaelassa01/gomacbot
-email [michaelassanama@yourdomain.com]: michaelassanama@yourdomain.com
-go_version [1.25.4]: 1.25.4
 Select postgresql_version:
-1 - 17
-2 - 16
-3 - 15
-4 - 14
-Choose from 1, 2, 3, 4 [1]: 2
-Select cloud_provider:
+1 - 18
+2 - 17
+3 - 16
+4 - 15
+5 - 14
+Choose from 1, 2, 3, 4, 5 [1]: 2
+use_docker [n]: y
+auto_install_deps [n]: y
+Select hosting_provider:
 1 - AWS
-2 - Railway
-3 - Azure
-4 - Digitalocean
-5 - None
-Choose from 1, 2, 3, 4, 5 [1]: 3
-Select mail_service:
-1 - Mailgun
-2 - Amazon SES
-3 - Mailtrap
-4 - Postmark
-5 - Sendgrid
-6 - Other SMTP
-Choose from 1, 2, 3, 4, 5, 6 [1]: 1
-Select ci_tool:
+2 - DigitalOcean
+3 - Railway
+Choose from 1, 2, 3 [1]: 3
+Select email_service:
 1 - None
-2 - Travis
-3 - Gitlab
-4 - Github
-5 - Drone
-Choose from 1, 2, 3, 4, 5 [1]: 4
-Select license:
-1 - MIT
-2 - BSD
-3 - GPLv3
-4 - Apache 2.0
-5 - Not open source
-Choose from 1, 2, 3, 4, 5 [1]: 1
+2 - Google
+3 - Mailgun
+4 - Zoho
+5 - SendGrid
+6 - Amazon SES
+7 - Postmark
+Choose from 1, 2, 3, 4, 5, 6, 7 [1]: 3
+use_mailpit [n]: y
 ```
 
 ### After generating

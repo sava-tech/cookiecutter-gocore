@@ -3,7 +3,7 @@ package payment_gateway
 import (
 	"fmt"
 
-	c "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}/utils"
+	c "{{ cookiecutter.module_path }}/utils"
 )
 
 type Config struct {
