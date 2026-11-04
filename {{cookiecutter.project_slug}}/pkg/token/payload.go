@@ -4,6 +4,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 )
 
@@ -47,3 +48,20 @@ func (payload *Payload) Valid() error {
 	}
 	return nil
 }
+
+// Validate implements jwt.ClaimsValidator so JWT verification applies the same
+// expiry check as Valid and returns ErrExpiredToken
+func (payload *Payload) Validate() error {
+	return payload.Valid()
+}
+
+// The registered-claim getters below are required by jwt.Claims. They return
+// nil because expiry is carried in the custom expired_at claim and checked by
+// Validate, which keeps the token format unchanged.
+
+func (payload *Payload) GetExpirationTime() (*jwt.NumericDate, error) { return nil, nil }
+func (payload *Payload) GetIssuedAt() (*jwt.NumericDate, error)       { return nil, nil }
+func (payload *Payload) GetNotBefore() (*jwt.NumericDate, error)      { return nil, nil }
+func (payload *Payload) GetIssuer() (string, error)                   { return "", nil }
+func (payload *Payload) GetSubject() (string, error)                  { return "", nil }
+func (payload *Payload) GetAudience() (jwt.ClaimStrings, error)       { return nil, nil }

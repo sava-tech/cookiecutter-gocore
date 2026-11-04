@@ -1,0 +1,67 @@
+name: Deploy to DigitalOcean App Platform
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Never run two deploys of the same branch at once
+concurrency:
+  group: deploy-{% raw %}${{ github.ref }}{% endraw %}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mailpit:
+        image: axllent/mailpit:latest
+        ports:
+          - 1025:1025
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+      - name: Generate Swagger docs
+        run: |
+          go install github.com/swaggo/swag/cmd/swag@latest
+          swag init -g cmd/api/main.go --parseDependency --parseInternal --output ./docs
+      - run: go vet ./...
+      - run: go test ./...
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_PREFIX: registry.digitalocean.com/{% raw %}${{ vars.DOCR_REGISTRY }}{% endraw %}/{{ cookiecutter.project_slug }}
+      IMAGE_TAG: {% raw %}${{ github.sha }}{% endraw %}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: {% raw %}${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}{% endraw %}
+      - name: Log in to DigitalOcean Container Registry
+        run: doctl registry login --expiry-seconds 1200
+      - name: Build and push images
+        run: |
+          docker build -t "$IMAGE_PREFIX-api:$IMAGE_TAG" -f Dockerfile .
+          docker push "$IMAGE_PREFIX-api:$IMAGE_TAG"
+{%- if cookiecutter.use_microservices == 'y' %}
+          docker build -t "$IMAGE_PREFIX-reports:$IMAGE_TAG" -f Dockerfile.reports .
+          docker push "$IMAGE_PREFIX-reports:$IMAGE_TAG"
+{%- endif %}
+      - name: Render app spec
+        env:
+          TOKEN_SYMMETRIC_KEY: {% raw %}${{ secrets.TOKEN_SYMMETRIC_KEY }}{% endraw %}
+          SESSION_SECRET: {% raw %}${{ secrets.SESSION_SECRET }}{% endraw %}
+          API_ACCESS_KEY: {% raw %}${{ secrets.API_ACCESS_KEY }}{% endraw %}
+          SMTP_HOST: {% raw %}${{ secrets.SMTP_HOST }}{% endraw %}
+          SMTP_PORT: {% raw %}${{ secrets.SMTP_PORT }}{% endraw %}
+          SMTP_USERNAME: {% raw %}${{ secrets.SMTP_USERNAME }}{% endraw %}
+          SMTP_PASSWORD: {% raw %}${{ secrets.SMTP_PASSWORD }}{% endraw %}
+          DEFAULT_FROM_EMAIL: {% raw %}${{ secrets.DEFAULT_FROM_EMAIL }}{% endraw %}
+        run: |
+          envsubst '$IMAGE_TAG $TOKEN_SYMMETRIC_KEY $SESSION_SECRET $API_ACCESS_KEY $SMTP_HOST $SMTP_PORT $SMTP_USERNAME $SMTP_PASSWORD $DEFAULT_FROM_EMAIL' \
+            < .do/app.yaml > "$RUNNER_TEMP/app.yaml"
+      - name: Create or update the app
+        run: doctl apps create --upsert --spec "$RUNNER_TEMP/app.yaml" --wait

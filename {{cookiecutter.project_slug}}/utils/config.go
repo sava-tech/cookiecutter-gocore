@@ -69,6 +69,9 @@ type Config struct {
 	// from these; leave empty when clients connect directly.
 	TrustedProxies string `mapstructure:"TRUSTED_PROXIES"`
 
+	// UsersServiceURL is the base URL of the users service, for services that call it.
+	UsersServiceURL string `mapstructure:"USERS_SERVICE_URL"`
+
 	// Rate limiting (per client IP). Zero values fall back to defaults.
 	RateLimitRPS           float64 `mapstructure:"RATE_LIMIT_RPS"`
 	RateLimitBurst         int     `mapstructure:"RATE_LIMIT_BURST"`
@@ -136,6 +139,7 @@ func LoadConfig(path string) (config Config, err error) {
 	// API / Email
 	// ======================
 	viper.BindEnv("API_ACCESS_KEY")
+	viper.BindEnv("USERS_SERVICE_URL")
 	viper.BindEnv("EMAIL_PROVIDER")
 	viper.BindEnv("MAILTRAP_URL")
 	viper.BindEnv("MAILTRAP_AUTH_TOKEN")
@@ -181,8 +185,7 @@ func LoadConfig(path string) (config Config, err error) {
 
 	// 🔎 Debug (optional)
 	log.Printf(
-		"TOKEN_SYMMETRIC_KEY=%q len=%d",
-		config.TokenSymmetricKey,
+		"TOKEN_SYMMETRIC_KEY len=%d",
 		len(config.TokenSymmetricKey),
 	)
 

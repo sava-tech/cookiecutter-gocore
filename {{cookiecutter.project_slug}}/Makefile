@@ -31,14 +31,13 @@ install-dependencies: ## Install all required dependencies for the project
 	@$(MAKE) deps
 	@echo "  → Installing development tools..."
 	@# Install golangci-lint for linting
-	@which golangci-lint > /dev/null || (echo "Installing golangci-lint..." && go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest)
+	go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
 	@# Install mockgen for mocking (optional)
-	@which mockgen > /dev/null || (echo "Installing mockgen..." && go install github.com/golang/mock/mockgen@latest)
+	go install go.uber.org/mock/mockgen@latest
 #	gomigrate
 	go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 	go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
 	go install github.com/swaggo/swag/cmd/swag@latest
-	go install github.com/hibiken/asynq@latest
 	go get github.com/gorilla/sessions
 #	for Gin
 	go get github.com/swaggo/gin-swagger
@@ -54,7 +53,7 @@ install-dependencies: ## Install all required dependencies for the project
 	go get firebase.google.com/go/v4
 	go get google.golang.org/api/option
 	@# Install mockgen for mocking (optional)
-	@which mockgen > /dev/null || (echo "Installing mockgen..." && go install github.com/golang/mock/mockgen@latest)
+	go install go.uber.org/mock/mockgen@latest
 	@echo "All dependencies installed!"
 
 
@@ -62,6 +61,11 @@ install-dependencies: ## Install all required dependencies for the project
 # Run the application
 run: ## Run the Go application
 	@go run cmd/api/main.go
+{%- if cookiecutter.use_microservices == 'y' %}
+
+run-reports: ## Run the reports service on :8081
+	@SERVER_ADDRESS=0.0.0.0:8081 go run ./cmd/reports
+{%- endif %}
 
 docker-run: ## Build and start Docker containers
 	@if docker compose up --build 2>/dev/null; then \

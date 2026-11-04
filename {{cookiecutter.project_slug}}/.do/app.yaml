@@ -1,15 +1,20 @@
+# Rendered by .github/workflows/deploy-app-platform.yml, which fills in
+# $IMAGE_TAG and the secrets with envsubst. ${db.DATABASE_URL} is left for
+# App Platform to resolve.
 name: {{ cookiecutter.project_slug }}
 region: nyc
 
 services:
   - name: api
-    dockerfile_path: Dockerfile
-    source_dir: /
+    image:
+      registry_type: DOCR
+      repository: {{ cookiecutter.project_slug }}-api
+      tag: "${IMAGE_TAG}"
     http_port: 8080
     instance_count: 1
     instance_size_slug: basic-xxs
     health_check:
-      http_path: /health
+      http_path: /public/health
       initial_delay_seconds: 10
       period_seconds: 10
     envs:
@@ -17,13 +22,84 @@ services:
         value: "0.0.0.0:8080"
       - key: PRODUCTION
         value: "true"
+      - key: GIN_MODE
+        value: release
+      - key: ACCESS_TOKEN_DURATION
+        value: 15m
+      - key: REFRESH_TOKEN_DURATION
+        value: 720h
+      - key: VERIFICATION_CODE_DURATION
+        value: 10m
       - key: DB_SOURCE
         value: ${db.DATABASE_URL}
         type: SECRET
       - key: TOKEN_SYMMETRIC_KEY
+        value: "${TOKEN_SYMMETRIC_KEY}"
         type: SECRET
       - key: SESSION_SECRET
+        value: "${SESSION_SECRET}"
         type: SECRET
+      - key: API_ACCESS_KEY
+        value: "${API_ACCESS_KEY}"
+        type: SECRET
+      - key: EMAIL_PROVIDER
+        value: smtp
+      - key: SMTP_HOST
+        value: "${SMTP_HOST}"
+      - key: SMTP_PORT
+        value: "${SMTP_PORT}"
+      - key: SMTP_USERNAME
+        value: "${SMTP_USERNAME}"
+        type: SECRET
+      - key: SMTP_PASSWORD
+        value: "${SMTP_PASSWORD}"
+        type: SECRET
+      - key: DEFAULT_FROM_EMAIL
+        value: "${DEFAULT_FROM_EMAIL}"
+{%- if cookiecutter.use_microservices == 'y' %}
+
+  - name: reports
+    image:
+      registry_type: DOCR
+      repository: {{ cookiecutter.project_slug }}-reports
+      tag: "${IMAGE_TAG}"
+    http_port: 8081
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    health_check:
+      http_path: /public/health
+      initial_delay_seconds: 5
+      period_seconds: 10
+    envs:
+      - key: SERVER_ADDRESS
+        value: "0.0.0.0:8081"
+      - key: GIN_MODE
+        value: release
+      - key: USERS_SERVICE_URL
+        value: http://api:8080
+      - key: TOKEN_SYMMETRIC_KEY
+        value: "${TOKEN_SYMMETRIC_KEY}"
+        type: SECRET
+      - key: API_ACCESS_KEY
+        value: "${API_ACCESS_KEY}"
+        type: SECRET
+{%- endif %}
+
+ingress:
+  rules:
+{%- if cookiecutter.use_microservices == 'y' %}
+    - match:
+        path:
+          prefix: /api/v1/reports
+      component:
+        name: reports
+        preserve_path_prefix: true
+{%- endif %}
+    - match:
+        path:
+          prefix: /
+      component:
+        name: api
 
 databases:
   - name: db

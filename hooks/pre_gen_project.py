@@ -29,7 +29,7 @@ def main():
         print(f"✓ Go found: {result.stdout.strip()}")
     except (subprocess.CalledProcessError, FileNotFoundError):
         print(" Error: Go is not installed or not in PATH")
-        print("Please install Go 1.25 before generating this project")
+        print("Please install Go 1.27 before generating this project")
         sys.exit(1)
     
     print("✓ Environment validation passed!")

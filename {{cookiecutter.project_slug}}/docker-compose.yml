@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:17-alpine3.22
+    image: postgres:18-alpine3.24
     container_name: {{ cookiecutter.project_name }}_postgres
     environment:
       - POSTGRES_USER=root
@@ -9,12 +9,12 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql
     networks:
       - app-network
 
   redis:
-    image: redis:7-alpine
+    image: redis:8-alpine
     container_name: {{ cookiecutter.project_name }}_redis
     ports:
       - "6379:6379"
@@ -49,9 +49,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: dev
     ports:
       - "8080:8080"
+    volumes:
+      - .:/app
+      - go_mod_cache:/go/pkg/mod
+      - go_build_cache:/root/.cache/go-build
     environment:
+      PRODUCTION: "false"
       DATABASE_URL: postgres://root:secret@postgres:5432/{{ cookiecutter.project_name }}_db?sslmode=disable
       REDIS_ADDRESS: redis:6379
       MAILPIT_HOST: mailpit  # This should be the service name
@@ -67,22 +73,43 @@ services:
 
     entrypoint:
       [
-        "/app/wait-for.sh",
+        "wait-for.sh",
         "postgres:5432",
         "--",
-        "/app/wait-for.sh",
+        "wait-for.sh",
         "redis:6379",
         "--",
-        "/app/wait-for.sh",
+        "wait-for.sh",
         "mailpit:1025",
         "--",
-        "/app/start.sh",
+        "start.sh",
       ]
-    command: ["/app/main"]
+    command: []
 
+{%- if cookiecutter.use_microservices == 'y' %}
+  reports:
+    container_name: {{ cookiecutter.project_name }}_reports
+    build:
+      context: .
+      dockerfile: Dockerfile.reports
+    ports:
+      - "8081:8081"
+    env_file:
+      - ./.env
+    environment:
+      SERVER_ADDRESS: 0.0.0.0:8081
+      USERS_SERVICE_URL: http://api:8080
+    depends_on:
+      - api
+    networks:
+      - app-network
+
+{% endif %}
 volumes:
   postgres_data:
   redis_data:
+  go_mod_cache:
+  go_build_cache:
 
 networks:
   app-network:

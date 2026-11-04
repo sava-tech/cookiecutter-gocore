@@ -11,6 +11,7 @@ import (
 )
 
 type Querier interface {
+	CountUsers(ctx context.Context) (int64, error)
 	CreateSession(ctx context.Context, arg CreateSessionParams) (Session, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	CreateVerification(ctx context.Context, arg CreateVerificationParams) (Verification, error)
@@ -25,6 +26,7 @@ type Querier interface {
 	GetValidVerificationCode(ctx context.Context, arg GetValidVerificationCodeParams) (Verification, error)
 	GetVerificationHash(ctx context.Context, arg GetVerificationHashParams) (string, error)
 	InvalidateVerificationCodes(ctx context.Context, arg InvalidateVerificationCodesParams) error
+	ListRegisteredUsers(ctx context.Context, arg ListRegisteredUsersParams) ([]ListRegisteredUsersRow, error)
 	ListUsers(ctx context.Context, arg ListUsersParams) ([]User, error)
 	MarkVerificationAsUsed(ctx context.Context, id pgtype.UUID) error
 	UpdatePassword(ctx context.Context, arg UpdatePasswordParams) error
