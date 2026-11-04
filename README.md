@@ -1,6 +1,6 @@
 # Cookiecutter GoCore — Golang REST API Boilerplate
 
-![Go](https://img.shields.io/badge/Go-1.22+-00ADD8?style=flat&logo=go)
+![Go](https://img.shields.io/badge/Go-1.27+-00ADD8?style=flat&logo=go)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-336791?style=flat&logo=postgresql)
 ![License](https://img.shields.io/badge/License-BSD--3--Clause-blue)
 ![CI](https://img.shields.io/badge/CI-GitHub%20Actions-success)
@@ -101,7 +101,7 @@ Each layer has **one responsibility — nothing more**, keeping your code clean 
 
 ## Requirements
 
-- Go 1.22+  
+- Go 1.27+  
 - PostgreSQL 14+  
 - Docker & Docker Compose (recommended)
 
@@ -174,6 +174,7 @@ Select postgresql_version:
 5 - 14
 Choose from 1, 2, 3, 4, 5 [1]: 2
 use_docker [n]: y
+use_microservices [n]: y
 auto_install_deps [n]: y
 Select hosting_provider:
 1 - AWS
@@ -190,6 +191,7 @@ Select email_service:
 7 - Postmark
 Choose from 1, 2, 3, 4, 5, 6, 7 [1]: 3
 use_mailpit [n]: y
+Deploy to DigitalOcean Kubernetes (DOKS) instead of App Platform? [y/N]: y   # only asked for DigitalOcean
 ```
 
 ### After generating

@@ -1,8 +1,7 @@
-# Build stage
-FROM golang:1.25.4-alpine3.22 AS builder
+# Tools shared by the dev and build stages
+FROM golang:1.27.3-alpine3.24 AS tools
 
-# Install certificates (not strictly needed in builder, but okay)
-RUN apk update && apk add --no-cache ca-certificates curl
+RUN apk add --no-cache ca-certificates curl
 
 WORKDIR /app
 
@@ -10,22 +9,28 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 
-# Install additional dependencies (add this)
-RUN go get github.com/markbates/goth && \
-    go get github.com/markbates/goth/providers/google && \
-    go get github.com/markbates/goth/providers/github && \
-    go get github.com/gorilla/sessions && \
-    go mod tidy
-
 # Install Air for live reloading
-RUN if ! command -v air >/dev/null 2>&1; then \
-    go install github.com/air-verse/air@latest; \
-    fi
+RUN go install github.com/air-verse/air@latest
 
 # install swag for swagger docs generation
-RUN if ! command -v swag >/dev/null 2>&1; then \
-    go install github.com/swaggo/swag/cmd/swag@latest; \
-    fi
+RUN go install github.com/swaggo/swag/cmd/swag@latest
+
+# Download golang-migrate binary
+RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.20.1/migrate.linux-amd64.tar.gz \
+    | tar xvz -C /usr/local/bin migrate
+
+
+# Dev stage: docker-compose mounts the source over /app and Air rebuilds on
+# change. The scripts live outside /app so the mount doesn't hide them.
+FROM tools AS dev
+COPY start.sh wait-for.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/start.sh /usr/local/bin/wait-for.sh
+EXPOSE 8080
+ENTRYPOINT ["/usr/local/bin/start.sh"]
+
+
+# Build stage
+FROM tools AS builder
 
 # Now copy the rest of the code
 COPY . .
@@ -33,20 +38,12 @@ COPY . .
 # generate swagger docs and fix compatibility
 RUN swag init -g cmd/api/main.go --parseDependency --parseInternal --output ./docs
 
-RUN apk add curl
-
 # Build the app
 RUN go build -o main cmd/api/main.go
 
-# Download golang-migrate binary
-RUN if [ ! -f /usr/local/bin/migrate ]; then \
-    curl -L https://github.com/golang-migrate/migrate/releases/download/v4.18.3/migrate.linux-amd64.tar.gz \
-    | tar xvz && mv migrate /usr/local/bin/migrate; \
-    fi
 
-
-# Run stage
-FROM debian:12-slim
+# Run stage (the default target, used for deployments)
+FROM debian:13-slim
 WORKDIR /app
 
 
@@ -57,15 +54,8 @@ RUN apt-get update && apt-get install -y \
     && update-ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-
-RUN apt-get update && apt-get install -y netcat-openbsd \
-    && rm -rf /var/lib/apt/lists/*
-
 COPY --from=builder /app/main .
 COPY --from=builder /usr/local/bin/migrate ./migrate
-
-# Install Air binary
-COPY --from=builder /go/bin/air /usr/local/bin/air
 
 # Copy the generated swagger docs
 COPY --from=builder /app/docs ./docs
@@ -74,7 +64,6 @@ COPY --from=builder /app/docs ./docs
 COPY pkg/emailer/templates pkg/emailer/templates
 COPY start.sh .
 COPY wait-for.sh .
-COPY .air.toml .
 COPY internal/*/migration ./migration
 COPY pkg/firebase/serviceAccountKey.json /app/pkg/firebase/serviceAccountKey.json
 

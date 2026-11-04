@@ -7,9 +7,17 @@ import sys
 
 HOSTING_FILES = {
     'AWS': ['deploy'],
-    'DigitalOcean': ['.do'],
+    'DigitalOcean': ['.do', '.github'],
     'Railway': ['railway.toml'],
 }
+
+MICROSERVICE_FILES = [
+    'cmd/reports',
+    'internal/reports',
+    'internal/users/internalapi',
+    'Dockerfile.reports',
+    '.do/k8s/reports.yaml',
+]
 
 # All of these are plain SMTP relays under the hood (pkg/emailer/smtp) —
 # only the host/port/credentials differ per provider.
@@ -52,6 +60,7 @@ EMAIL_PRESETS = {
     },
 }
 
+
 def apply_email_preset(content):
     """Pre-fill SMTP_HOST/PORT and leave a hint above the credential fields
     for the chosen email_service, so 'quick spin up' doesn't mean guessing
@@ -67,6 +76,15 @@ def apply_email_preset(content):
     content = content.replace('SMTP_PASSWORD=', f'# Password: {preset["password_hint"]}\nSMTP_PASSWORD=')
     return content
 
+
+def remove_paths(paths):
+    for path in paths:
+        if os.path.isdir(path):
+            shutil.rmtree(path, ignore_errors=True)
+        elif os.path.isfile(path):
+            os.remove(path)
+
+
 def cleanup_hosting_provider():
     """Keep only the deploy config for the chosen hosting_provider and
     drop the others, so the prompt actually changes what gets generated."""
@@ -74,12 +92,40 @@ def cleanup_hosting_provider():
     for name, paths in HOSTING_FILES.items():
         if name == provider:
             continue
-        for path in paths:
-            if os.path.isdir(path):
-                shutil.rmtree(path, ignore_errors=True)
-            elif os.path.isfile(path):
-                os.remove(path)
+        remove_paths(paths)
     print(f"Kept deploy config for {provider}")
+
+
+def use_kubernetes():
+    """Cookiecutter can't make one prompt depend on another's answer, so the
+    Kubernetes question is asked here, only for DigitalOcean. Pass
+    _use_kubernetes=y or =n to answer it without a prompt."""
+    answer = '{{ cookiecutter._use_kubernetes }}'
+    if answer == 'ask':
+        if not sys.stdin.isatty():
+            return False
+        answer = input('Deploy to DigitalOcean Kubernetes (DOKS) instead of App Platform? [y/N]: ')
+    return answer.strip().lower() in ('y', 'yes')
+
+
+def cleanup_digitalocean_target():
+    """Keep only the workflow and manifests for the chosen DigitalOcean target."""
+    if '{{ cookiecutter.hosting_provider }}' != 'DigitalOcean':
+        return
+    if use_kubernetes():
+        remove_paths(['.do/app.yaml', '.github/workflows/deploy-app-platform.yml'])
+        print('Kept Kubernetes manifests and the deploy-k8s workflow')
+    else:
+        remove_paths(['.do/k8s', '.github/workflows/deploy-k8s.yml'])
+        print('Kept the App Platform spec and the deploy-app-platform workflow')
+
+
+def cleanup_microservices():
+    """Drop the reports service unless use_microservices was chosen."""
+    if '{{ cookiecutter.use_microservices }}' == 'y':
+        return
+    remove_paths(MICROSERVICE_FILES)
+
 
 def generate_env_file():
     """Create .env from env.example with real random secrets instead of the
@@ -97,6 +143,10 @@ def generate_env_file():
         'SESSION_SECRET=CHANGE_ME_32_BYTE_RANDOM_SECRET',
         f'SESSION_SECRET={secrets.token_hex(16)}',
     )
+    content = content.replace(
+        'API_ACCESS_KEY=CHANGE_ME_API_ACCESS_KEY',
+        f'API_ACCESS_KEY={secrets.token_hex(32)}',
+    )
     content = apply_email_preset(content)
     with open('.env', 'w') as f:
         f.write(content)
@@ -107,6 +157,7 @@ def generate_env_file():
     else:
         print("email_service is None — .env defaults to Mailpit for local dev only")
 
+
 def main():
     # Cookiecutter already runs hooks from the generated project directory
     # So the current working directory IS the project directory
@@ -114,14 +165,16 @@ def main():
 
     generate_env_file()
     cleanup_hosting_provider()
+    cleanup_digitalocean_target()
+    cleanup_microservices()
 
     # Ask user if they want to install dependencies now
     if '{{cookiecutter.auto_install_deps}}' == 'y':
         if os.path.exists('Makefile'):
             try:
                 print("Installing dependencies...")
-                subprocess.run(['make', 'swagger-doc'], check=True)
                 subprocess.run(['make', 'install-dependencies'], check=True)
+                subprocess.run(['make', 'swagger-doc'], check=True)
                 print("Done....")
             except subprocess.CalledProcessError as e:
                 print(f"Failed to install dependencies: {e}")

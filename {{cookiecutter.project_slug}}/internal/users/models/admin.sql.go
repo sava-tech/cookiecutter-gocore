@@ -7,9 +7,23 @@ package users
 
 import (
 	"context"
+	"time"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
+
+const countUsers = `-- name: CountUsers :one
+SELECT COUNT(*)
+FROM users
+WHERE is_active = true
+`
+
+func (q *Queries) CountUsers(ctx context.Context) (int64, error) {
+	row := q.db.QueryRow(ctx, countUsers)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
 
 const deleteUser = `-- name: DeleteUser :exec
 DELETE FROM users
@@ -19,6 +33,55 @@ WHERE id = $1
 func (q *Queries) DeleteUser(ctx context.Context, id pgtype.UUID) error {
 	_, err := q.db.Exec(ctx, deleteUser, id)
 	return err
+}
+
+const listRegisteredUsers = `-- name: ListRegisteredUsers :many
+SELECT id, email, first_name, last_name, email_verified, created_at
+FROM users
+WHERE is_active = true
+ORDER BY created_at DESC
+LIMIT $1 OFFSET $2
+`
+
+type ListRegisteredUsersParams struct {
+	Limit  int32 `json:"limit"`
+	Offset int32 `json:"offset"`
+}
+
+type ListRegisteredUsersRow struct {
+	ID            pgtype.UUID `json:"id"`
+	Email         string      `json:"email"`
+	FirstName     string      `json:"first_name"`
+	LastName      string      `json:"last_name"`
+	EmailVerified bool        `json:"email_verified"`
+	CreatedAt     time.Time   `json:"created_at"`
+}
+
+func (q *Queries) ListRegisteredUsers(ctx context.Context, arg ListRegisteredUsersParams) ([]ListRegisteredUsersRow, error) {
+	rows, err := q.db.Query(ctx, listRegisteredUsers, arg.Limit, arg.Offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ListRegisteredUsersRow{}
+	for rows.Next() {
+		var i ListRegisteredUsersRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.Email,
+			&i.FirstName,
+			&i.LastName,
+			&i.EmailVerified,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const listUsers = `-- name: ListUsers :many

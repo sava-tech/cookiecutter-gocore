@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reports
+  labels:
+    app: reports
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reports
+  template:
+    metadata:
+      labels:
+        app: reports
+    spec:
+      containers:
+        - name: reports
+          # The deploy workflow replaces this with the image it just pushed
+          image: reports-image
+          ports:
+            - containerPort: 8081
+          env:
+            - name: SERVER_ADDRESS
+              value: "0.0.0.0:8081"
+            - name: GIN_MODE
+              value: release
+            - name: USERS_SERVICE_URL
+              value: http://api
+            - name: TOKEN_SYMMETRIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: TOKEN_SYMMETRIC_KEY
+            - name: API_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: API_ACCESS_KEY
+          readinessProbe:
+            httpGet:
+              path: /public/health
+              port: 8081
+            initialDelaySeconds: 2
+          livenessProbe:
+            httpGet:
+              path: /public/health
+              port: 8081
+            initialDelaySeconds: 15
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              memory: 64Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: reports
+spec:
+  type: LoadBalancer
+  selector:
+    app: reports
+  ports:
+    - port: 80
+      targetPort: 8081

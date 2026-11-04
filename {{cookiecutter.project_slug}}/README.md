@@ -73,7 +73,7 @@ A modular Go REST API built with **Domain-Driven Design (DDD)**, **Gin**, **SQLC
 
 ## Requirements
 
-- Go 1.22+
+- Go 1.27+
 - Docker and Docker Compose (for Postgres, Redis and Mailpit)
 - Make
 
@@ -292,6 +292,34 @@ Locally, `USE_MAILPIT=true` and an empty `EMAIL_PROVIDER` still route through Ma
 while developing. Set `EMAIL_PROVIDER=smtp` when you're ready to send through {{ cookiecutter.email_service }}.
 {%- endif %}
 
+{% if cookiecutter.use_microservices == 'y' -%}
+## Microservices
+
+The project runs as two services that talk over HTTP:
+
+```
+client --(Bearer token)--> reports :8081 --(api-access-key)--> api :8080 --> Postgres
+```
+
+- **api** (`cmd/api`) owns the users table, and signs users in. It serves `/internal/v1/users/*` to other services,
+  protected by `API_ACCESS_KEY`.
+- **reports** (`cmd/reports`) has no database. It verifies the caller's access token locally with the shared
+  `TOKEN_SYMMETRIC_KEY`, then fetches the data from **api**.
+
+| Endpoint | Who can call it |
+| --- | --- |
+| `GET /api/v1/reports/users/count` | Any signed-in user |
+| `GET /api/v1/reports/users/registered?limit=20&offset=0` | `admin` accounts only |
+
+Promote an account to admin in the database, then sign in again to get a token with the new role:
+
+```sql
+UPDATE users SET account_type = 'admin' WHERE email = 'you@example.com';
+```
+
+`docker compose up --build` starts both services. Locally, use `make run` and `make run-reports`.
+
+{% endif -%}
 ## Deployment
 
 This project is set up to deploy to **{{ cookiecutter.hosting_provider }}**.
@@ -305,14 +333,30 @@ project, then set `DB_SOURCE` and the other variables from `env.example` in the 
 railway up
 ```
 {%- elif cookiecutter.hosting_provider == "DigitalOcean" -%}
-`.do/app.yaml` defines a DigitalOcean App Platform spec (API service + managed Postgres). Create the app with:
+Every push to `main` runs the tests, builds the Docker image(s), pushes them to DigitalOcean Container Registry and
+deploys them. Set these up in your GitHub repository first (Settings > Secrets and variables > Actions), and create
+the registry with `doctl registry create <name>`.
 
-```bash
-doctl apps create --spec .do/app.yaml
-```
+| Variable | Value |
+| --- | --- |
+| `DOCR_REGISTRY` | Your container registry name |
+| `DOKS_CLUSTER` | Your Kubernetes cluster name (Kubernetes only) |
 
-Set the `TOKEN_SYMMETRIC_KEY`/`SESSION_SECRET` secrets in the App Platform dashboard after creation — they're
-declared as `SECRET` type and not stored in the spec file.
+| Secret | Value |
+| --- | --- |
+| `DIGITALOCEAN_ACCESS_TOKEN` | A DigitalOcean API token |
+| `DB_SOURCE` | Postgres connection string, e.g. a DigitalOcean Managed Database (Kubernetes only) |
+| `TOKEN_SYMMETRIC_KEY` | Exactly 32 characters: `openssl rand -hex 16` |
+| `SESSION_SECRET` | `openssl rand -hex 16` |
+| `API_ACCESS_KEY` | `openssl rand -hex 32` |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `DEFAULT_FROM_EMAIL` | Your email provider's SMTP settings |
+
+The project contains the workflow for the target you chose during setup:
+
+- `.github/workflows/deploy-app-platform.yml` creates or updates the App Platform app defined in `.do/app.yaml`,
+  including a development Postgres database.
+- `.github/workflows/deploy-k8s.yml` applies the manifests in `.do/k8s` to your DOKS cluster. Each service gets its own
+  DigitalOcean Load Balancer; find the addresses with `kubectl -n {{ cookiecutter.project_slug }} get svc`.
 {%- elif cookiecutter.hosting_provider == "AWS" -%}
 `deploy/aws/apprunner-service.json` deploys the Dockerfile to AWS App Runner via ECR. See
 [`deploy/aws/README.md`](deploy/aws/README.md) for the full push-image-then-create-service walkthrough, including

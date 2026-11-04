@@ -487,8 +487,9 @@ func TestAuthService_VerifyEmail(t *testing.T) {
 		{
 			name: "OK - Successful verification",
 			req: &dto.VerifyEmailRequest{
-				Email: "test@example.com",
-				Code:  "1234",
+				Email:            "test@example.com",
+				Code:             "1234",
+				VerificationType: "registration",
 			},
 			setupMocks: func(mr *mock_db.MockRepository) {
 				hashedCode := helpers.HashPINFast("1234")
@@ -533,8 +534,9 @@ func TestAuthService_VerifyEmail(t *testing.T) {
 		{
 			name: "Invalid verification - verification not found after code match",
 			req: &dto.VerifyEmailRequest{
-				Email: "test@example.com",
-				Code:  "1234",
+				Email:            "test@example.com",
+				Code:             "1234",
+				VerificationType: "registration",
 			},
 			setupMocks: func(mr *mock_db.MockRepository) {
 				hashedCode := helpers.HashPINFast("1234")
@@ -557,8 +559,9 @@ func TestAuthService_VerifyEmail(t *testing.T) {
 		{
 			name: "Verification not found",
 			req: &dto.VerifyEmailRequest{
-				Email: "test@example.com",
-				Code:  "1234",
+				Email:            "test@example.com",
+				Code:             "1234",
+				VerificationType: "registration",
 			},
 			setupMocks: func(mr *mock_db.MockRepository) {
 				hashedCode := helpers.HashPINFast("1234")
@@ -580,8 +583,9 @@ func TestAuthService_VerifyEmail(t *testing.T) {
 		{
 			name: "Mark verification as used fails",
 			req: &dto.VerifyEmailRequest{
-				Email: "test@example.com",
-				Code:  "1234",
+				Email:            "test@example.com",
+				Code:             "1234",
+				VerificationType: "registration",
 			},
 			setupMocks: func(mr *mock_db.MockRepository) {
 				hashedCode := helpers.HashPINFast("1234")

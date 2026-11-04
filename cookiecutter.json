@@ -10,6 +10,8 @@
   "module_path": "github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}",
   "hosting_provider": ["AWS", "DigitalOcean", "Railway"],
   "use_docker": "n",
+  "use_microservices": "n",
+  "_use_kubernetes": "ask",
   "auto_install_deps": "n",
   "email_service": [
     "None",

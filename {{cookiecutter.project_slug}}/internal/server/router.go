@@ -18,6 +18,9 @@ import (
 	socialauthInfra "{{ cookiecutter.module_path }}/internal/socialauth/infrastructure"
 	"{{ cookiecutter.module_path }}/internal/users"
 	"{{ cookiecutter.module_path }}/internal/users/handlers"
+{%- if cookiecutter.use_microservices == 'y' %}
+	"{{ cookiecutter.module_path }}/internal/users/internalapi"
+{%- endif %}
 	"{{ cookiecutter.module_path }}/utils"
 )
 
@@ -41,6 +44,11 @@ func (s *Server) setupRouter(config utils.Config) {
 	if err := router.SetTrustedProxies(splitCSV(config.TrustedProxies)); err != nil {
 		log.Fatalf("invalid TRUSTED_PROXIES: %v", err)
 	}
+{%- if cookiecutter.use_microservices == 'y' %}
+	// Registered before the rate limiter: other services all share one client
+	// IP, and these routes already require the service API key.
+	internalapi.RegisterRoutes(router, s.db, config.ApiAccessKey)
+{%- endif %}
 	router.Use(newGlobalRateLimiter(config).Middleware())
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
